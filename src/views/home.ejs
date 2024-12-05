@@ -1,0 +1,18 @@
+<div class="home-body mt-4">
+  <div class="left-section">
+    <h1 class="career-goals-header">Achieve Your Career Goals</h1>
+    <% if (locals.currentUser && locals.currentUser.lastVisit) { %>
+      <p class="last-visit">Your last visit was on <%= locals.currentUser.lastVisit %></p>
+    <% } %>
+    <div class="options">
+      <a href="/jobs" class="btn btn-outline-primary">See Jobs</a>
+      <% if(locals.currentUser) { %>
+        <a href="/postedJobs" class="btn btn-outline-secondary">See Posted Jobs</a>
+      <% } %>
+    </div>
+  </div>
+  <div class="right-section d-flex flex-column">
+    <h2 class="belief-text">We believe in a</h2>
+    <img src="images/illustration.png" class="banner-image" alt="" srcset="">
+  </div>
+</div>

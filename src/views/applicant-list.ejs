@@ -1,0 +1,35 @@
+<div class="container mt-5">
+  <div class="inner-container applicant-listing-container">
+    <h2 class="text-center mb-4 applicant-listing-header">Applicants for <%= data.jobDesign %> at <%= data.companyName %></h2>
+    <% if (data.applicants.length > 0) { %>
+      <table class="table table-striped text-center applicant-listing-table">
+        <thead class="applicant-listing-thead">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Contact</th>
+            <th>Resume</th>
+          </tr>
+        </thead>
+        <tbody class="applicant-listing-tbody">
+          <% data.applicants.forEach(applicant => { %>
+            <tr>
+              <td><%= applicant.name %></td>
+              <td><%= applicant.email %></td>
+              <td><%= applicant.contact %></td>
+              <td>
+                <a href="http://localhost:3100/<%= applicant.resumePath %>" class="text-decoration-underline applicant-listing-link" target="_blank">
+                  Resume
+                </a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <div class="alert alert-info text-center applicant-listing-alert">
+        No applicants have applied for this job yet.
+      </div>
+    <% } %>
+  </div>
+</div>

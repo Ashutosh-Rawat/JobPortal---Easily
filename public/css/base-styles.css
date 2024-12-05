@@ -1,0 +1,106 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --accent-color: #e74c3c;
+    --bg-color: #1b1b1b;
+    --light-bg-color: #2c2c2c;
+    --text-color: #ecf0f1;
+    --header-bg-color: #3a3a3a;
+    --header-text-color: #ecf0f1;
+    --filter-bg-color: #2e3b4e;
+    --button-primary: #3498db;
+    --button-secondary: #2ecc71;
+    --button-outline: #2974e6;
+    --muted-text: #7f8c8d;
+    --link-color: #3498db;
+    --font-normal: 'Roboto', sans-serif;
+    --font-emphasized: 'Montserrat', sans-serif;
+    --tile-gradient-start: #192247;
+    --tile-gradient-end: #210e17;
+    --container-padding-block: 1.8rem;
+    --container-padding-inline: 1.8rem;
+    --border-radius: 5px;
+    --box-shadow: 0 4px 8px var(--tile-gradient-end);
+    --grid-gap: 20px;
+    --font-size-large: 1.25rem;
+    --margin-bottom: 10px;
+    --margin-bottom-small: 5px;
+    --button-hover-darken: 10%;
+}
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-normal);
+    background-color: var(--light-bg-color);
+    color: var(--text-color);
+}
+
+a {
+    color: var(--link-color);
+}
+
+a:hover {
+    color: var(--accent-color);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-color);
+    font-family: var(--font-emphasized);
+}
+
+small {
+    color: var(--muted-text);
+}
+
+ul {
+    list-style-type: none;
+}
+
+.btn {
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.btn-outline-primary {
+    color: var(--button-primary);
+    border-color: var(--button-primary);
+}
+
+.btn-outline-primary:hover {
+    border-color: var(--button-primary);
+    background-color: var(--button-primary) !important;
+    filter: brightness(.85);
+
+}
+
+.btn-outline-secondary {
+    color: var(--button-secondary);
+    border-color: var(--button-secondary);
+}
+
+.btn-outline-secondary:hover {
+    border-color: var(--button-secondary);
+    background-color: var(--button-secondary) !important;
+    filter: brightness(.85);
+}
+
+.btn-outline {
+    background-color: transparent;
+    border-color: var(--button-outline);
+    color: var(--button-outline);
+}
+
+.btn-outline:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.muted-text {
+    color: var(--muted-text);
+}

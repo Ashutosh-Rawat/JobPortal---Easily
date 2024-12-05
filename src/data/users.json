@@ -1,0 +1,24 @@
+[
+  {
+    "userId": 1001,
+    "name": "Arun Pratap",
+    "email": "codingninjas2k16@gmail.com",
+    "pass": "slwvvlczduktvhdj",
+    "jobsPosted": [
+      3001,
+      3002
+    ],
+    "lastVisit": "9/14/2024, 9:05:17 PM"
+  },
+  {
+    "userId": 1002,
+    "name": "testing user",
+    "email": "no.name.236.23@gmail.com",
+    "pass": "abcdef8*",
+    "jobsPosted": [
+      3003,
+      3004
+    ],
+    "lastVisit": "9/14/2024, 9:29:51 PM"
+  }
+]

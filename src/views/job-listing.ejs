@@ -1,0 +1,74 @@
+<script>
+  const data = JSON.parse('<%- JSON.stringify(data) %>')
+</script>
+<div class="container-fluid mt-3">
+  <% if (data.length === 0) { %>
+    <div class="d-flex w-100 justify-content-center align-items-center" style="height: 80vh;">
+      <div class="no-jobs-message text-center">
+        <img src="https://cdn.pixabay.com/photo/2016/05/14/18/23/emoticon-1392275_1280.png" alt="Sad Smiley Face" style="width: 100px; height: 100px;">
+        <p style="font-size: 2rem;">Sorry, no jobs available right now.</p>
+        <% if(currentUser) { %>
+          <a class="btn btn-outline-info" href="/jobs/add">Post a Job</a>
+        <% } %>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="d-flex w-100 position-relative">
+      <div class="filter-section">
+        <h3>Filter Jobs</h3>
+        <form id="filterForm">
+          <div class="form-group">
+            <label for="jobCategory">Job Category</label>
+            <select id="jobCategory" class="form-control">
+              <option value="">--Select Job--</option>
+              <% category.forEach(job => { %>
+                <option value="<%= job.jobCategory %>">
+                  <%= job.jobCategory %>
+                </option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="skills">Skills</label>
+            <select id="skills" class="form-control" multiple>
+              <option value="">Select category to show skills</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="salary">Salary Range</label>
+            <input type="range" id="salary" class="form-control" min="0" max="100" value="0">
+            <div id="salaryRangeValue">0 - 100</div>
+          </div>
+          <button type="submit" class="btn btn-outline-primary">Apply Filters</button>
+        </form>
+      </div>
+      <div class="job-tiles-container ml-auto">
+        <div class="d-flex job-tiles px-3 flex-wrap justify-content-between" id="jobTiles">
+          <% data.forEach(job => { %>
+            <% if(job) { %>
+              <div class="job-tile d-flex flex-column p-3">
+                <div class="job-content flex-grow-1">
+                  <h3 class="text-primary"><%= job.jobDesign %></h3>
+                  <p class="text-muted">Company: <%= job.companyName %></p>
+                  <p class="text-muted">Location: <%= job.jobLocation %></p>
+                  <p class="text-muted">Package: ₹<%= job.salary %> LPA</p>
+                  <p class="text-muted">Apply By: <%= job.applyBy %></p>
+                  <p class="text-muted mt-3">Skills Required:</p>
+                  <div class="skills-container">
+                    <% job.skillsRequired.forEach(skill => { %>
+                      <span class="skill-pill"><%= skill %></span>
+                    <% }) %>
+                  </div>
+                </div>
+                <a href="/jobs/<%= job.jobId %>" class="btn btn-outline-secondary mt-3 align-self-start">Details</a>
+              </div>  
+            <% } %>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script src="js/filterFunctions.js" type="module"></script>

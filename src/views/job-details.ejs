@@ -1,0 +1,39 @@
+<div class="container mt-5">
+  <div class="card job-detail-card">
+    <div class="card-body">
+      <h3 class="card-title text-center"><%= data.jobDesign %></h3>
+      <h5 class="card-subtitle mb-2 text-muted text-center"><%= data.companyName %></h5>
+      <div class="row">
+        <div class="col-md-12">
+          <p class="card-text">
+            <span class="detail-label"><i class="fas fa-map-marker-alt"></i> Location:</span> <%= data.jobLocation %><br>
+            <span class="detail-label">Category:</span> <%= data.jobCategory %><br>
+            <span class="detail-label">Salary:</span> ₹<%= data.salary %> LPA<br>
+            <span class="detail-label">Apply By:</span> <%= data.applyBy %><br>
+            <span class="detail-label">Posted On:</span> <%= data.jobPosted %><br>
+            <span class="detail-label">Number of openings:</span> <%= data.numberOfOpenings %><br>
+            <span class="detail-label">Number of applicants:</span> <%= data.applicants.length %><br>
+          </p>
+          <span class="detail-label">Skill Required:</span>
+          <div class="skills-container">
+            <% data.skillsRequired.forEach(function(skill) { %>
+              <span class="skill-pill"><%= skill %></span>
+            <% }); %>
+          </div>
+        </div>
+      </div>
+      <div class="btns d-flex gap-2 mt-5">
+        <% if(!locals.currentUser) { %>
+          <a href="/jobs/<%= data.jobId %>/apply" class="btn btn-outline-secondary">Apply Now</a>
+        <% } else { %>
+          <% if(data.applicants && data.applicants.length) { %>
+            <a href="/jobs/<%= data.jobId %>/applicants" class="btn btn-outline-success mr-2">See Applicants</a>
+          <% } %>
+        <%  } if(locals.eligibleRecruiter) { %>
+          <a href="/jobs/<%= data.jobId %>/update" class="btn btn-outline-primary mr-2">Update Job Details</a>
+          <button type="button" onclick="getDeleteJobAuth('<%= data.jobId %>')" class="btn btn-outline-danger mr-2">Delete Job</button>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
