@@ -1,7 +1,7 @@
 import JobModel from "../models/job.model.js"
 import jobCategories from "../../public/js/jobCategories.js"
 
-export default class jobController {
+export default class JobController {
     getJobListing(req, res) {
         res.status(200).render('job-listing', {
             includeHeader: true,

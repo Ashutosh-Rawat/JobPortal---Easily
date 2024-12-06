@@ -20,6 +20,9 @@ import getError from './src/controllers/error.controller.js'
 import userController from './src/controllers/user.controller.js'
 import jobController from './src/controllers/job.controller.js'
 import applicantController from './src/controllers/applicant.controller.js'
+import userRouter from './src/routes/user.routes.js'
+import jobRouter from './src/routes/job.routes.js'
+import applicantRouter from './src/routes/applicant.routes.js'
 
 // declaration of express functions
 const app = express()
@@ -52,37 +55,14 @@ app.use(ejsLayouts)
 app.get('/', getHome)
 app.get('/err', getError)
 
-// user register
-app.get('/register', userControllerObj.getRegister)
-app.post('/register', 
-    validateRegistration, 
-    userControllerObj.postRegister
-)
+// user routes
+app.use('/user', userRouter)
+// job routes
+app.use('/jobs', jobRouter)
+// applicant routes
+app.use('/applicant', applicantRouter)
 
-// route for deleting user
-// (followed by deleting all jobs to that user)
-// (followed by deleting all the job applications to those jobs)
-app.post('/deleteUser', auth,
-    userControllerObj.postDeleteUser,
-    jobControllerObj.postDeleteMultipleJobs,
-    applicantControllerObj.postDeleteApplicants,
-    userControllerObj.getLogout
-)
 
-// user login/logout
-app.get('/login', userControllerObj.getLogin)
-app.post('/login', setLastVisit, userControllerObj.postLogin)
-app.get('/logout', auth, userControllerObj.getLogout)
-
-// more user pages
-app.get('/change-pass', auth, 
-    userControllerObj.getChangePassword
-)
-app.post('/change-pass', auth,
-    validatePasswordChange,
-    userControllerObj.postChangePassword
-)
-// job pages
 app.get('/jobs', jobControllerObj.getJobListing)
 app.get('/jobs/add', auth, jobControllerObj.getNewJob)
 // get user's posted jobs

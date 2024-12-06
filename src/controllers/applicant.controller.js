@@ -1,7 +1,7 @@
 import path from 'path'
 import ApplicantModel from '../models/applicant.model.js'
 
-export default class applicantController {
+export default class ApplicantController {
     getJobApplication(req,res) {
         res.render('job-application', {
             includeHeader: true,

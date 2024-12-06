@@ -1,6 +1,6 @@
 import UserModel from "../models/user.model.js"
 
-export default class userController {
+export default class UserController {
     getRegister(req,res) {
         res.status(200).render('register',{
             includeHeader: true, errors:null

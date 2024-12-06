@@ -7,6 +7,7 @@
 .navbar-brand {
     display: flex;
     align-items: center;
+    padding-block: .6rem;
 }
 
 #logo {
