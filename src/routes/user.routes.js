@@ -1,96 +1,118 @@
-// src/routes/user.router.js
+// src/routes/job.router.js
 import express, { Router } from 'express'
+import JobController from '../controllers/job.controller.js'
 import UserController from '../controllers/user.controller.js'
 import ApplicantController from '../controllers/applicant.controller.js'
-import JobController from '../controllers/job.controller.js'
-import validateRegistration from '../middlewares/registration.middleware.js'
 import auth from '../middlewares/auth.middleware.js'
-import setLastVisit from '../middlewares/lastVisit.middleware.js'
-import validatePasswordChange from '../middlewares/changePassValidation.middleware.js'
+import validateJob from '../middlewares/jobFormValidation.middleware.js'
+import validateJobApplication from '../middlewares/validateJobApplication.middleware.js'
+import deleteFileOnValidationError from '../middlewares/deleteFileValidation.middware.js'
+import sendMail from '../middlewares/sendMail.middleware.js'
+import uploadFile from '../middlewares/fileUpload.middleware.js'
 
-const userRouter = Router()
+const jobRouter = Router()
+const jobController = new JobController()
 const userController = new UserController()
 const applicantController = new ApplicantController()
-const jobController = new JobController()
 
-// Route to get the registration form
-userRouter.get('/register', 
-    // Retrieve registration form
-  (req, res, next) => {
-    userController.getRegister(req, res, next) 
-})
-
-// Route to post the registration data
-userRouter.post('/register', 
-  validateRegistration, 
-    // Handle user registration
-  (req, res, next) => {
-    userController.postRegister(req, res, next) 
-  }
-)
-
-// Route to delete a user
-// First, delete the user account
-// Then, delete all jobs posted by that user
-// Finally, delete all job applications to those jobs
-userRouter.post('/deleteUser', auth,
-    // Delete user account
-  (req, res, next) => {
-    userController.postDeleteUser(req, res, next)
-  },
-    // Delete all job posted by user
-  (req, res, next) => {
-    jobController.postDeleteMultipleJobs(req, res, next) 
-  },
-    // Delete all job applications by user
-  (req, res, next) => {
-    applicantController.postDeleteApplicants(req, res, next)
-  },
-    // Logout user
-  (req, res, next) => {
-    userController.getLogout(req, res, next)
-  }
-)
-
-// Route to get the login form
-userRouter.get('/login', 
-  (req, res, next) => {
-    userController.getLogin(req, res, next)
-  }
-)
-
-// Route to post the login data
-userRouter.post('/login', 
-  (req, res, next) => {
-    setLastVisit(req, res, next)
-  },
-     
-    // Handler user login
-  (req, res, next) => {
-    userController.postLogin(req, res, next)
-  }
-)
-
-// Route to logout the user
-userRouter.get('/logout', auth, 
+// Route to display all job listings
+jobRouter.get('/',
     (req, res, next) => {
-        userController.getLogout(req, res, next)
+        jobController.getJobListing(req, res, next)
     }
 )
 
-// Route to get the change password form
-userRouter.get('/change-pass', auth, 
+// Route to display the form for adding a new job
+jobRouter.get('/add', auth,
     (req, res, next) => {
-        userController.getChangePassword(req, res, next)
+        jobController.getNewJob(req, res, next)
     }
 )
 
-// Route to post the new password
-userRouter.post('/change-pass', auth, 
-    validatePasswordChange, 
+// Route to get all jobs posted by the logged-in user
+jobRouter.get('/postedJobs', auth,
     (req, res, next) => {
-        userController.postChangePassword(req, res, next)
+        jobController.getPostedJobListing(req, res, next)
     }
 )
 
-export default userRouter
+// Route to add a new job
+// Validates job data and associates the job with the user
+jobRouter.post('/jobs/add', auth,
+    validateJob,
+    (req, res, next) => {
+        jobController.postNewJob(req, res, next)
+    },
+    (req, res, next) => {
+        userController.postUpdateJobPosted(req, res, next)
+    }
+)
+
+// Route to get details of a specific job by ID
+jobRouter.get('/jobs/:id',
+    (req, res, next) => {
+        jobController.getJobDetails(req, res, next)
+    }
+)
+
+// Route to display the update form for a specific job
+jobRouter.get('/jobs/:id/update', auth,
+    (req, res, next) => {
+        jobController.getUpdateJob(req, res, next)
+    }
+)
+
+// Route to update a specific job
+jobRouter.post('/jobs/:id/update', auth,
+    validateJob,
+    (req, res, next) => {
+        jobController.postUpdateJob(req, res, next)
+    }
+)
+
+// Route to delete a specific job
+// Deletes associated applications and updates the user's job list
+jobRouter.post('/jobs/:id/delete', auth,
+    (req, res, next) => {
+        jobController.postDeleteJob(req, res, next)
+    },
+    (req, res, next) => {
+        applicantController.postDeleteApplicants(req, res, next)
+    },
+    (req, res, next) => {
+        userController.postDeleteJobId(req, res, next)
+    }
+)
+
+// Route to display applicants for a specific job
+jobRouter.get('/jobs/:id/applicants', auth,
+    (req, res, next) => {
+        jobController.getJobApplicants(req, res, next)
+    }
+)
+
+// Route to display the application form for a job
+jobRouter.get('/jobs/:id/apply',
+    (req, res, next) => {
+        applicantController.getJobApplication(req, res, next)
+    }
+)
+
+// Route to submit a job application
+// Handles validation, file uploads, and sending notifications
+jobRouter.post('/jobs/:id/apply',
+    uploadFile.single('resumePath'),
+    validateJobApplication,
+    deleteFileOnValidationError,
+    (req, res, next) => {
+        applicantController.postJobApplication(req, res, next)
+    },
+    (req, res, next) => {
+        jobController.postAddApplicants(req, res, next)
+    },
+    (req, res, next) => {
+        sendMail(req, res, next)
+    }
+)
+
+export default jobRouter
