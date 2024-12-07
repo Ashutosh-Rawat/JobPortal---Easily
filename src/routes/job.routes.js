@@ -11,48 +11,68 @@ const jobController = new JobController()
 jobRouter.get('/', (req,res,next) => {
     jobController.getJobListing(req,res,next)
 })
-jobRouter.get('/add', auth, jobController.getNewJob)
+jobRouter.get('/add', auth, 
+    (req,res,next) => {
+        jobController.getNewJob(req,res,next)
+    }
+)
 // get user's posted jobs
 jobRouter.get('/postedJobs', auth,
-    jobController.getPostedJobListing
+    (req,res,next) => {
+        jobController.getPostedJobListing(req,res,next)
+    }
 )
 
 // route for updating job 
 // (followed by adding jobid to user)
 jobRouter.post('/jobs/add', auth,
     validateJob,
-    jobController.postNewJob,
-    userControllerObj.postUpdateJobPosted
+    (req,res,next) => {
+        jobController.postNewJob(req,res,next)
+    }
+    // userControllerObj.postUpdateJobPosted
 )
 
 // specific job routes
 jobRouter.get('/jobs/:id',
-    jobController.getJobDetails
+    (req,res,next) => {
+        jobController.getJobDetails(req,res,next)
+    }
 )
 jobRouter.get('/jobs/:id/update', auth,
-    jobController.getUpdateJob
+    (req,res,next) => {
+        jobController.getUpdateJob(req,res,next)
+    }
 )
 jobRouter.post('/jobs/:id/update', auth,
     validateJob,
-    jobController.postUpdateJob
+    (req,res,next) => {
+        jobController.postUpdateJob(req,res,next)
+    }
 )
 
 // route for deleting job 
 // (followed by deleting job applications if present)
 jobRouter.post('/jobs/:id/delete', auth,
-    jobController.postDeleteJob,
-    applicantControllerObj.postDeleteApplicants,
-    userControllerObj.postDeleteJobId
+    (res,res,next) => {
+        jobController.postDeleteJob(req,res,next)
+    }
+    // applicantControllerObj.postDeleteApplicants,
+    // userControllerObj.postDeleteJobId
 )
 
 // display job applicants
 jobRouter.get('/jobs/:id/applicants', auth,
-    jobController.getJobApplicants
+    (req,res,next) => {
+        jobController.getJobApplicants(req,res,next)
+    }
 )
 
 // applying job
 jobRouter.get('/jobs/:id/apply',
-    applicantControllerObj.getJobApplication
+    (req,res,next) => {
+        applicantControllerObj.getJobApplication(req,res,next)
+    }
 )
 
 // route for applying job application 
@@ -62,8 +82,10 @@ jobRouter.post('/jobs/:id/apply',
     uploadFile.single('resumePath'), 
     validateJobApplication,
     deleteFileOnValidationError,
-    applicantControllerObj.postJobApplication,
-    jobController.postAddApplicants,
+    // applicantControllerObj.postJobApplication,
+    (req,res,next) => {
+        jobController.postAddApplicants(req,res,next)
+    },
     sendMail
 )
 

@@ -1,6 +1,9 @@
 import app from "./index.js"
+import connectMongoose from "./src/config/mongooseConfig.js"
 
 const portId = 3100
-app.listen(portId,()=> {
-    console.log(`server started listening on port ${portId}`)
+// server connection
+app.listen(portId, () => {
+    console.log(`server started for port ${portId}`)
+    connectMongoose()
 })

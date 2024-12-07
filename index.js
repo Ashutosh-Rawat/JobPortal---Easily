@@ -5,49 +5,60 @@ import session from 'express-session'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
-// functional middlewares
-import getHome from './src/controllers/home.controller.js'
-import getError from './src/controllers/error.controller.js'
+// routers
 import userRouter from './src/routes/user.routes.js'
 import jobRouter from './src/routes/job.routes.js'
 import applicantRouter from './src/routes/applicant.routes.js'
+// functional middlewares
+import applicationErrorHandler from './src/middlewares/ApplicationError.middleware.js'
+// functional controllers
+import getHome from './src/controllers/home.controller.js'
+import getError from './src/controllers/error.controller.js'
 
-// declaration of express functions
+// Express app declaration
 const app = express()
-// setting session
+
+// Middleware configuration
 app.use(cookieParser())
-app.use(urlencoded({extended:true}))
-// for parsing json from req.body()
+app.use(urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({
     secret: 'secret-key-ABCD',
     resave: false,
     saveUninitialized: true,
-    cookie: {secure: false}
+    cookie: { secure: false }
 }))
 
-// configure environmental variables
+// Environmental variables configuration
 dotenv.config()
-// public accesses
-app.use(express.static(path.join('src','views')))
+
+// Static file paths
+app.use(express.static(path.join('src', 'views')))
 app.use(express.static(path.join('public')))
-// middlewares
+
+// View engine setup
 app.set('view engine', 'ejs')
-app.set('views',path.resolve('src','views'))
+app.set('views', path.resolve('src', 'views'))
 app.use(ejsLayouts)
 
-// --------------------------------------------------------------- //
-// access routes
+// Routes
 app.get('/', getHome)
 app.get('/err', getError)
 
-// user routes
 app.use('/user', userRouter)
-// job routes
 app.use('/jobs', jobRouter)
-// applicant routes
 app.use('/applicant', applicantRouter)
 
+// Handling invalid routes
+app.use((req, res, next) => {
+    next(new ApplicationError({
+        code: 404, message: 'Route not found' 
+        })
+    )
+})
+
+// Error handler middleware
+app.use(applicationErrorHandler)
 
 export default app

@@ -1,4 +1,4 @@
-import {Schema} from "mongoose"
+import {Schema, model} from "mongoose"
 
 const jobCategorySchema = new Schema({
     jobCategory: {
@@ -15,4 +15,5 @@ const jobCategorySchema = new Schema({
     }]
 })
 
-export default jobCategorySchema
+const CategoryModel = model('Category', jobCategorySchema)
+export default CategoryModel
