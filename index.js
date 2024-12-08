@@ -24,10 +24,10 @@ app.use(urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({
-    secret: 'secret-key-ABCD',
+    secret: process.env.SESSION_SECRET || 'secret-key-ABCD',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }
+    cookie: { secure: process.env.NODE_ENV === 'production' }
 }))
 
 // Environmental variables configuration

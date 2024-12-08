@@ -13,7 +13,6 @@
     --button-secondary: #2ecc71;
     --button-outline: #2974e6;
     --muted-text: #7f8c8d;
-    --link-color: #3498db;
     --font-normal: 'Roboto', sans-serif;
     --font-emphasized: 'Montserrat', sans-serif;
     --tile-gradient-start: #192247;
@@ -29,7 +28,7 @@
     --button-hover-darken: 10%;
 }
 
-
+/* General Styles */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -77,7 +76,6 @@ ul {
     border-color: var(--button-primary);
     background-color: var(--button-primary) !important;
     filter: brightness(.85);
-
 }
 
 .btn-outline-secondary {
@@ -102,6 +100,39 @@ ul {
     border-color: var(--accent-color);
 }
 
-.muted-text {
-    color: var(--muted-text);
+/* Error Page Styles */
+.err-wrapper {
+    min-height: 100vh;
+    background-color: var(--light-bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.error-content {
+    text-align: center;
+    max-width: 500px;
+}
+
+.error-content h1 {
+    font-size: 3rem;
+    color: var(--primary-color);
+}
+
+.error-content p {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.error-content a {
+    background-color: var(--button-primary);
+    color: #fff;
+    padding: 0.5rem 1.5rem;
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s;
+}
+
+.error-content a:hover {
+    background-color: darken(var(--button-primary), 10%);
 }
