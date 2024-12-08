@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import UserController from '../controllers/user.controller.js'
 import validateRegistration from '../middlewares/registration.middleware.js'
-import auth from '../middlewares/auth.middleware.js'
+import { jwtAuth } from '../auth/jwt.auth.js'
 import setLastVisit from '../middlewares/lastVisit.middleware.js'
 import validatePasswordChange from '../middlewares/changePassValidation.middleware.js'
 
@@ -23,7 +23,7 @@ userRouter.post('/register',
 )
 
 // Route to delete a user and handle jobs and applicants
-userRouter.post('/deleteUser', auth,
+userRouter.post('/deleteUser', jwtAuth,
     (req, res, next) => {
         userController.postDeleteUser(req, res, next)
     }
@@ -37,31 +37,28 @@ userRouter.get('/login',
 )
 
 // Route to post the login data
-userRouter.post('/login', 
-    (req, res, next) => {
-        setLastVisit(req, res, next)
-    },
+userRouter.post('/login', setLastVisit,
     (req, res, next) => {
         userController.postLogin(req, res, next)
     }
 )
 
 // Route to get logout
-userRouter.get('/logout', 
+userRouter.get('/logout', jwtAuth,
     (req, res, next) => {
         userController.getLogout(req, res, next)
     }
 )
 
 // Route to get the change password form
-userRouter.get('/change-password', 
+userRouter.get('/change-password', jwtAuth,
     (req, res, next) => {
         userController.getChangePassword(req, res, next)
     }
 )
 
 // Route to post the change password data
-userRouter.post('/change-password', 
+userRouter.post('/change-password', jwtAuth,
     validatePasswordChange,
     (req, res, next) => {
         userController.postChangePassword(req, res, next)

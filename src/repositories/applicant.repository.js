@@ -1,5 +1,4 @@
 import ApplicantModel from '../models/applicant.model.js'
-import { handleDbError } from '../utils/dbErrorHandler.js'
 
 class ApplicantRepository {
     async createApplicant(applicantData) {
@@ -10,7 +9,6 @@ class ApplicantRepository {
             return applicant
         } catch (error) {
             console.error('Error creating applicant:', error)
-            handleDbError(error)
         }
     }
 
@@ -21,7 +19,6 @@ class ApplicantRepository {
             return deletedApplicant
         } catch (error) {
             console.error(`Error deleting applicant with ID ${applicantId}:`, error)
-            handleDbError(error)
         }
     }
 }

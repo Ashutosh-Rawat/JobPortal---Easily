@@ -30,7 +30,7 @@ export default class JobController {
 
     async createJob(req, res, next) {
         try {
-            const jobDetails = req.body
+            const jobDetails = { ...req.body, postedBy: req.user.id }
             const newJob = await this.jobRepo.createJob(jobDetails)
             res.redirect(`/job/${newJob._id}`)
         } catch (error) {

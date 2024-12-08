@@ -1,6 +1,7 @@
 import UserRepository from '../repositories/user.repository.js'
 import JobRepository from '../repositories/job.repository.js'
 import ApplicantRepository from '../repositories/applicant.repository.js'
+import { hashPassword, comparePassword, createToken, clearToken } from '../auth/jwt.auth.js'
 
 export default class UserController {
     constructor() {
@@ -20,8 +21,11 @@ export default class UserController {
     async postRegister(req, res, next) {
         const { name, email, pass } = req.body
         try {
-            const user = await this.userRepo.addUser({ name, email, pass })
-            res.redirect('/login')
+            const hashedPassword = await hashPassword(pass)
+            const user = await this.userRepo.addUser({ name, email, pass: hashedPassword })
+            const token = createToken({ id: user._id, name: user.name, email: user.email })
+            res.cookie('token', token, { httpOnly: true })
+            res.redirect('/')
         } catch (error) {
             next(error)
         }
@@ -29,7 +33,7 @@ export default class UserController {
 
     getLogin(req, res, next) {
         try {
-            res.status(401).render('login', { includeHeader: true, err: false })
+            res.status(200).render('login', { includeHeader: true, err: false })
         } catch (error) {
             next(error)
         }
@@ -39,24 +43,27 @@ export default class UserController {
         const { email, pass } = req.body
         try {
             const user = await this.userRepo.getUserByEmail(email)
-            if (!user || user.pass !== pass) {
+            if (!user || !(await comparePassword(pass, user.pass))) {
                 throw new Error('Incorrect login credentials')
             }
-            req.session.userId = user._id
+    
+            // Update last visit in the database
+            const now = new Date().toISOString()
+            await this.userRepo.setLastVisit(user._id, now)
+    
+            const token = createToken({ id: user._id, name: user.name, email: user.email })
+            res.cookie('token', token, { httpOnly: true })
             res.redirect('/')
         } catch (error) {
             next(error)
         }
     }
+    
 
     getLogout(req, res, next) {
         try {
-            req.session.destroy(err => {
-                if (err) {
-                    return next(err)
-                }
-                res.redirect('/')
-            })
+            clearToken(res)
+            res.redirect('/')
         } catch (error) {
             next(error)
         }
@@ -64,7 +71,7 @@ export default class UserController {
 
     getChangePassword(req, res, next) {
         try {
-            res.locals.currentUser = req.session.currentUser
+            res.locals.currentUser = req.user
             res.status(200).render('change-pass', { includeHeader: true, err: false })
         } catch (error) {
             next(error)
@@ -72,13 +79,14 @@ export default class UserController {
     }
 
     async postChangePassword(req, res, next) {
-        const { email, currentPassword, newPassword } = req.body
+        const { currentPassword, newPassword } = req.body
         try {
-            const user = await this.userRepo.getUserByEmail(email)
-            if (!user || user.pass !== currentPassword) {
-                throw new Error('Incorrect password')
+            const user = await this.userRepo.getUserByEmail(req.user.email)
+            if (!user || !(await comparePassword(currentPassword, user.pass))) {
+                throw new Error('Incorrect current password')
             }
-            req.session.currentUser = await this.userRepo.updateUserPassword(email, newPassword)
+            const hashedPassword = await hashPassword(newPassword)
+            await this.userRepo.updateUserPassword(req.user.email, hashedPassword)
             res.redirect('/')
         } catch (error) {
             next(error)
@@ -87,42 +95,32 @@ export default class UserController {
 
     async postDeleteUser(req, res, next) {
         try {
-            const jobsPosted = await this.userRepo.deleteUser(req.session.currentUser.userId)
+            const jobsPosted = await this.userRepo.deleteUser(req.user.id)
             res.locals.jobsPosted = jobsPosted
             res.locals.proceed = true
             next()
         } catch (error) {
-            console.error(error)
-            res.locals.err = 'Error occurred while deleting your profile'
-            res.redirect('/err')
+            next(error)
         }
     }
 
     async postUpdateJobPosted(req, res) {
         try {
             const newJobId = res.locals.newJobId
-            req.session.currentUser = await this.userRepo.addPostedJobId(
-                req.session.currentUser.userId, newJobId
-            )
+            req.user = await this.userRepo.addPostedJobId(req.user.id, newJobId)
             res.redirect('/jobs')
         } catch (error) {
-            console.error(error)
-            req.session.err = 'Error occurred while uploading job to your profile'
-            res.redirect('/err')
+            next(error)
         }
     }
 
     async postDeleteJobId(req, res) {
         try {
             const deleteJob = res.locals.deleteJob
-            req.session.currentUser = await this.userRepo.deletePostedJobId(
-                req.session.currentUser.userId, deleteJob
-            )
+            req.user = await this.userRepo.deletePostedJobId(req.user.id, deleteJob)
             res.redirect('/jobs')
         } catch (error) {
-            console.error(error)
-            req.session.err = "Error occurred while deleting deleted jobs from user's database"
-            res.redirect('/err')
+            next(error)
         }
     }
 }
