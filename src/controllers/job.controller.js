@@ -1,14 +1,16 @@
 import JobRepository from '../repositories/job.repository.js'
+import ApplicantRepository from '../repositories/applicant.repository.js'
 
-class JobController {
+export default class JobController {
     constructor() {
-        this.jobRepo = new JobRepository()
+        this.jobRepo = JobRepository
+        this.applicantRepo = ApplicantRepository
     }
 
     async listJobs(req, res, next) {
         try {
             const jobs = await this.jobRepo.listJobs()
-            res.render('job-listing', { jobs, includeHeader: true })
+            res.status(200).render('job-listing', { jobs, includeHeader: true })
         } catch (error) {
             next(error)
         }
@@ -16,9 +18,11 @@ class JobController {
 
     async getJobDetails(req, res, next) {
         try {
-            const { id: jobId } = req.params
-            const job = await this.jobRepo.findJobById(jobId)
-            res.render('job-details', { job, includeHeader: true })
+            const job = await this.jobRepo.findJobById(req.params.id)
+            if (!job) {
+                throw new Error('Job not found')
+            }
+            res.status(200).render('job-details', { job, includeHeader: true })
         } catch (error) {
             next(error)
         }
@@ -27,9 +31,8 @@ class JobController {
     async createJob(req, res, next) {
         try {
             const jobDetails = req.body
-            const recruiterId = req.session.currentUser?._id
-            const newJob = await this.jobRepo.createJob({ ...jobDetails, recruiter: recruiterId })
-            res.redirect(`/jobs/${newJob._id}`)
+            const newJob = await this.jobRepo.createJob(jobDetails)
+            res.redirect(`/job/${newJob._id}`)
         } catch (error) {
             next(error)
         }
@@ -37,10 +40,11 @@ class JobController {
 
     async updateJob(req, res, next) {
         try {
-            const { id: jobId } = req.params
-            const updates = req.body
-            const updatedJob = await this.jobRepo.updateJob(jobId, updates)
-            res.redirect(`/jobs/${updatedJob._id}`)
+            const updatedJob = await this.jobRepo.updateJob(req.params.id, req.body)
+            if (!updatedJob) {
+                throw new Error('Job not found')
+            }
+            res.redirect(`/job/${updatedJob._id}`)
         } catch (error) {
             next(error)
         }
@@ -48,20 +52,20 @@ class JobController {
 
     async deleteJob(req, res, next) {
         try {
-            const { id: jobId } = req.params
-            await this.jobRepo.deleteJob(jobId)
+            await this.jobRepo.deleteJob(req.params.id)
             res.redirect('/jobs')
         } catch (error) {
             next(error)
         }
     }
 
-    async applyToJob(req, res, next) {
+    async addApplicant(req, res, next) {
         try {
-            const { id: jobId } = req.params
-            const { applicantId } = res.locals
-            await this.jobRepo.addApplicantToJob(jobId, applicantId)
-            next()
+            const job = await this.jobRepo.addApplicantToJob(req.params.id, req.body.applicantId)
+            if (!job) {
+                throw new Error('Job not found')
+            }
+            res.redirect(`/job/${job._id}`)
         } catch (error) {
             next(error)
         }
@@ -69,14 +73,13 @@ class JobController {
 
     async removeApplicant(req, res, next) {
         try {
-            const { id: jobId } = req.params
-            const { applicantId } = req.body
-            await this.jobRepo.removeApplicantFromJob(jobId, applicantId)
-            res.redirect(`/jobs/${jobId}/applicants`)
+            const job = await this.jobRepo.removeApplicantFromJob(req.params.id, req.body.applicantId)
+            if (!job) {
+                throw new Error('Job not found')
+            }
+            res.redirect(`/job/${job._id}`)
         } catch (error) {
             next(error)
         }
     }
 }
-
-export default JobController

@@ -1,5 +1,4 @@
 import JobModel from '../models/job.model.js'
-import { handleDbError } from '../utils/dbErrorHandler.js'
 
 class JobRepository {
     async listJobs() {
@@ -7,7 +6,6 @@ class JobRepository {
             return await JobModel.find()
         } catch (error) {
             console.error('Error listing jobs:', error)
-            handleDbError(error)
         }
     }
 
@@ -16,7 +14,6 @@ class JobRepository {
             return await JobModel.findById(jobId).populate('applicants')
         } catch (error) {
             console.error(`Error finding job with ID ${jobId}:`, error)
-            handleDbError(error)
         }
     }
 
@@ -28,7 +25,6 @@ class JobRepository {
             return job
         } catch (error) {
             console.error('Error creating job:', error)
-            handleDbError(error)
         }
     }
 
@@ -39,7 +35,6 @@ class JobRepository {
             return updatedJob
         } catch (error) {
             console.error(`Error updating job with ID ${jobId}:`, error)
-            handleDbError(error)
         }
     }
 
@@ -50,7 +45,6 @@ class JobRepository {
             return deletedJob
         } catch (error) {
             console.error(`Error deleting job with ID ${jobId}:`, error)
-            handleDbError(error)
         }
     }
 
@@ -65,7 +59,6 @@ class JobRepository {
             return job
         } catch (error) {
             console.error(`Error adding applicant ${applicantId} to job ${jobId}:`, error)
-            handleDbError(error)
         }
     }
 
@@ -80,9 +73,8 @@ class JobRepository {
             return job
         } catch (error) {
             console.error(`Error removing applicant ${applicantId} from job ${jobId}:`, error)
-            handleDbError(error)
         }
     }
 }
 
-export default JobRepository
+export default new JobRepository()
