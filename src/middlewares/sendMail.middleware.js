@@ -1,13 +1,17 @@
 import nodemailer from 'nodemailer'
-import path from 'path'
+import dotenv from 'dotenv'
+
+dotenv.config()
+const senderMail = process.env.HOST_MAIL
+const senderPass = process.env.HOST_PASSWORD
 
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
     secure: true,
     auth: {
-        user: 'codingninjas2k16@gmail.com',
-        pass: 'slwvvlczduktvhdj'
+        user: senderMail,
+        pass: senderPass
     }
 })
 
@@ -16,26 +20,29 @@ const imgSrc = 'https://cdn.pixabay.com/photo/2016/11/07/13/04/yoga-1805784_1280
 
 const sendMail = (req, res, next) => {
     const { applicantName, applicantEmail, companyName, jobDesign } = res.locals.mailInfo
-    
+
     res.render(ejsViewFilename, {
         includeHeader: false,
         applicantName, companyName, jobDesign, imgSrc
     }, (err, html) => {
         if (err) {
+            console.error('Error rendering email template:', err)
             return next(err)
         }
 
         const mailOptions = {
-            from: 'codingninjas2k16@gmail.com',
+            from: senderMail,
             to: applicantEmail,
             subject: 'Job application sent successfully',
             html: html
         }
 
-        transporter.sendMail(mailOptions, (error, info) => {
+        transporter.sendMail(mailOptions, (error) => {
             if (error) {
+                console.error('Error sending email:', error)
                 return next(error)
             }
+            console.log('Email sent successfully!')
             res.redirect('/jobs')
         })
     })

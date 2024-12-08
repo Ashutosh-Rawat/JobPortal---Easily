@@ -1,100 +1,88 @@
-import {ObjectId} from 'mongodb'
-import { ApplicationError } from "../middlewares/ApplicationError.middleware.js"
-import JobModel from "../models/job.model.js"
-import applicantModel from "../models/applicant.model.js"
+import JobModel from '../models/job.model.js'
+import { handleDbError } from '../utils/dbErrorHandler.js'
 
 class JobRepository {
-    async createJob(jobData) {
+    async listJobs() {
         try {
-            const job = await JobModel.create(jobData)
-            console.log(`job listed for: ${job.desgination}`)
-            return job
-        } catch (err) {
-            console.log(err)
-            throw err
+            return await JobModel.find()
+        } catch (error) {
+            console.error('Error listing jobs:', error)
+            handleDbError(error)
         }
     }
 
-    async getJobById(jobId) {
+    async findJobById(jobId) {
         try {
             return await JobModel.findById(jobId).populate('applicants')
-        } catch (err) {
-            console.log(err)
-            throw err
+        } catch (error) {
+            console.error(`Error finding job with ID ${jobId}:`, error)
+            handleDbError(error)
         }
     }
 
-    async jobPosted(userId) {
+    async createJob(jobDetails) {
         try {
-            const postedJobs = await JobModel.find({recruiter: ObjectId(userId)})
-            if(!postedJobs) throw new ApplicationError({code: 404, message: 'User has not posted any jobs'})
-        } catch(err) {
-            console.log(err)
-            throw err
+            const job = new JobModel(jobDetails)
+            await job.save()
+            console.log('Job created:', job)
+            return job
+        } catch (error) {
+            console.error('Error creating job:', error)
+            handleDbError(error)
         }
     }
 
-    async updateJob(jobId, jobData) {
+    async updateJob(jobId, updates) {
         try {
-            const updatedJob = await JobModel.findByIdAndUpdate(jobId, jobData, { new: true })
-            if (!updatedJob) throw new ApplicationError({ message: 'Error updating job', code: 404 })
+            const updatedJob = await JobModel.findByIdAndUpdate(jobId, updates, { new: true })
+            console.log(`Job updated: ${jobId}`)
             return updatedJob
-        } catch (err) {
-            console.log(err)
-            throw err
+        } catch (error) {
+            console.error(`Error updating job with ID ${jobId}:`, error)
+            handleDbError(error)
         }
     }
 
     async deleteJob(jobId) {
         try {
             const deletedJob = await JobModel.findByIdAndDelete(jobId)
-            if (!deletedJob) throw new ApplicationError({ message: 'Error deleting job', code: 404 })
-            return deletedJob.applicants
-        } catch (err) {
-            console.log(err)
-            throw err
+            console.log(`Job deleted: ${jobId}`)
+            return deletedJob
+        } catch (error) {
+            console.error(`Error deleting job with ID ${jobId}:`, error)
+            handleDbError(error)
         }
     }
 
     async addApplicantToJob(jobId, applicantId) {
         try {
-            const updatedJob = await JobModel.findByIdAndUpdate(
+            const job = await JobModel.findByIdAndUpdate(
                 jobId,
                 { $push: { applicants: applicantId } },
                 { new: true }
             )
-            if (!updatedJob) throw new ApplicationError({ message: 'Job not found', code: 404 })
-            return updatedJob
-        } catch (err) {
-            console.log(err)
-            throw err
+            console.log(`Applicant added to job: ${applicantId} -> ${jobId}`)
+            return job
+        } catch (error) {
+            console.error(`Error adding applicant ${applicantId} to job ${jobId}:`, error)
+            handleDbError(error)
         }
     }
 
     async removeApplicantFromJob(jobId, applicantId) {
         try {
-            const updatedJob = await JobModel.findByIdAndUpdate(
+            const job = await JobModel.findByIdAndUpdate(
                 jobId,
                 { $pull: { applicants: applicantId } },
                 { new: true }
             )
-            if (!updatedJob) throw new ApplicationError({ message: 'Job not found', code: 404 })
-            return updatedJob
-        } catch (err) {
-            console.log(err)
-            throw err
-        }
-    }
-
-    async getAllJobs() {
-        try {
-            const jobs = await JobModel.find().populate('applicants')
-            return jobs
-        } catch (err) {
-            console.log(err)
-            throw err
+            console.log(`Applicant removed from job: ${applicantId} -> ${jobId}`)
+            return job
+        } catch (error) {
+            console.error(`Error removing applicant ${applicantId} from job ${jobId}:`, error)
+            handleDbError(error)
         }
     }
 }
 
-export default new JobRepository()
+export default JobRepository
