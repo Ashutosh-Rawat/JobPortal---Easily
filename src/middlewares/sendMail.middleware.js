@@ -3,7 +3,6 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 const senderMail = process.env.HOST_MAIL
-const senderPass = process.env.HOST_PASSWORD
 
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
@@ -11,7 +10,7 @@ const transporter = nodemailer.createTransport({
     secure: true,
     auth: {
         user: senderMail,
-        pass: senderPass
+        pass: process.env.HOST_PASSWORD
     }
 })
 
@@ -22,8 +21,7 @@ const sendMail = (req, res, next) => {
     const { applicantName, applicantEmail, companyName, jobDesign } = res.locals.mailInfo
 
     res.render(ejsViewFilename, {
-        includeHeader: false,
-        applicantName, companyName, jobDesign, imgSrc
+        imgSrc, applicantName, companyName, jobDesign
     }, (err, html) => {
         if (err) {
             console.error('Error rendering email template:', err)

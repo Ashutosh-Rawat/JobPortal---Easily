@@ -1,35 +1,39 @@
+<!-- confirmationMail.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Application Confirmation</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        body {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 14px;
+            background-color: #f7f7f7;
+            padding: 20px;
+            margin: 0;
+        }
         .container {
-            font-family: Verdana, Geneva, Tahoma, sans-serif !important;
-            font-size: 14px !important;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            text-align: center;
         }
-        .row {
-            width: 100% !important;
-            display: flex !important;
-            justify-content: center !important;
-            align-items: center !important;
-        }
-        img {
-            width: 150px !important;
+        .logo {
+            width: 100px;
+            margin: 0 auto;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="row">
-            <img src="<%= imgSrc %>" alt="Company Logo">
-        </div>
-        <p>Hi, <%= applicantName %>,</p>
-        <p>Job application sent at <%= companyName %> for the position of <%= jobDesign %>.</p>
-        <p>We wish you best of luck for your future.</p>
-        <p>easily team</p>
+        <img src="<%= imgSrc %>" alt="Company Logo" class="logo">
+        <h2>Hi, <%= applicantName %>,</h2>
+        <p>Your job application to <%= companyName %> for the position of <%= jobDesign %> was successful.</p>
+        <p>We wish you the best of luck in your future endeavors.</p>
+        <p>Regards,<br>The Easily Team</p>
     </div>
 </body>
 </html>
