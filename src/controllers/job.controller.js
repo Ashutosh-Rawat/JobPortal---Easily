@@ -1,52 +1,41 @@
-import JobRepository from "../repositories/job.repository.js"
+import jobRepository from "../repositories/job.repository.js"
 import CategoryModel from "../models/category.model.js"
+import { ApplicationError } from "../middlewares/ApplicationError.middleware.js"
+import userRepository from "../models/user.repository.js"
 
 const categories = await CategoryModel.find()
 
 export default class JobController {
     async getJobListing(req, res, next) {
         try {
-            const jobs = await JobRepository.getAllJobs()
+            const jobList = await jobRepository.getAllJobs()
             res.status(200).render('job-listing', {
                 includeHeader: true,
-                data: jobs,
+                data: jobList,
                 category: categories,
                 currentUser: req.session.currentUser
             })
         } catch (err) {
             console.log(err)
-            req.session.err = 'error fetching jobs'
-            res.redirect(302, '/err')
+            if(err instanceof ApplicationError) next(err)
+            else throw new ApplicationError(500, 'Error occured while listing jobs')
         }
     }
 
-    async getPostedJobListing(req, res, next) {
+    async getPostedJob(req, res, next) {
         try {
-            if(req.session.currentUser) {
-                if(req.session.currentUser.jobsPosted) {
-                    const jobList = []
-                    for (const jobid of req.session.currentUser.jobsPosted) {
-                        const job = await JobRepository.getJobById(jobid)
-                        jobList.push(job)
-                    }
-                    res.status(200).render('job-listing', {
-                        includeHeader: true,
-                        data: jobList || [],
-                        category: categories,
-                        currentUser: req.session.currentUser
-                    })
-                } else {
-                    req.session.err = 'no jobs posted by user'
-                    res.redirect(302, '/err')
-                }
-            } else {
-                req.session.err = 'user not present'
-                res.redirect(302, '/err')
-            }
+            const userId = req.session.userId
+            const jobList = await userRepository.jobPosted(userId)
+            res.status(200).render('job-listing', {
+                includeHeader: true,
+                data: jobList || [],
+                category: categories,
+                currentUser: req.session.currentUser
+            })
         } catch (err) {
             console.log(err)
-            req.session.err = 'error fetching posted jobs'
-            res.redirect(302, '/err')
+            if(err instanceof ApplicationError) next(err)
+            else throw new ApplicationError(500, 'Error fetching jobs posted by user')
         }
     }
 
@@ -61,20 +50,20 @@ export default class JobController {
     async postNewJob(req, res, next) {
         try {
             const jobData = { ...req.body }
-            const jobid = await JobRepository.createJob(jobData)
+            const jobid = await jobRepository.createJob(jobData)
             req.session.currentUser.jobsPosted.push(jobid)
             res.locals.newJobId = jobid
             next()
         } catch (err) {
             console.log(err)
-            req.session.err = 'error occurred while submitting the job'
-            res.redirect(302, '/err')
+            if(err instanceof ApplicationError) next(err)
+            else throw new ApplicationError(500, 'Error occured on posting job')
         }
     }
 
     async getUpdateJob(req, res) {
         try {
-            const job = await JobRepository.getJobById(req.params.id)
+            const job = await jobRepository.getJobById(req.params.id)
             res.render('update-job', {
                 includeHeader: true,
                 data: job,
@@ -83,26 +72,26 @@ export default class JobController {
             })
         } catch (err) {
             console.log(err)
-            req.session.err = 'error occurred while fetching job details for update'
-            res.redirect(302, '/err')
+            if(err instanceof ApplicationError) next(err)
+            else throw new ApplicationError(500, 'Error getting job details')
         }
     }
 
     async postUpdateJob(req, res) {
         try {
             const jobData = { ...req.body }
-            await JobRepository.updateJob(req.params.id, jobData)
+            await jobRepository.updateJob(req.params.id, jobData)
             res.redirect(302, '/jobs')
         } catch (err) {
             console.log(err)
-            req.session.err = 'error occurred while updating job'
-            res.redirect(302, '/err')
+            if(err instanceof ApplicationError) next(err)
+            else throw new ApplicationError(500, 'Error occured while updating job')
         }
     }
 
     async postDeleteJob(req, res, next) {
         try {
-            const applicants = await JobRepository.deleteJob(req.params.id)
+            const applicants = await jobRepository.deleteJob(req.params.id)
             if (applicants && applicants.length) {
                 res.locals.proceed = true
                 res.locals.deleteJob = req.params.id
@@ -113,8 +102,8 @@ export default class JobController {
             }
         } catch (err) {
             console.log(err)
-            req.session.err = 'error occurred while deleting job'
-            res.redirect(302, '/err')
+            if(err instanceof ApplicationError) next(err)
+                else throw new ApplicationError(500, 'Error occured while deleting job')
         }
     }
 
@@ -124,7 +113,7 @@ export default class JobController {
             if (jobsPosted && jobsPosted.length) {
                 const applicantList = []
                 for (const jobid of jobsPosted) {
-                    const applicants = await JobRepository.deleteJob(jobid)
+                    const applicants = await jobRepository.deleteJob(jobid)
                     if (applicants && applicants.length) {
                         applicantList.push(...applicants)
                     }
@@ -143,7 +132,7 @@ export default class JobController {
 
     async getJobDetails(req, res) {
         try {
-            const job = await JobRepository.getJobById(req.params.id)
+            const job = await jobRepository.getJobById(req.params.id)
             const eligibleRecruiter = req.session.currentUser &&
                                       req.session.currentUser.jobsPosted.includes(Number(req.params.id))
             res.render('job-details', {
@@ -161,7 +150,7 @@ export default class JobController {
 
     async getJobApplicants(req, res) {
         try {
-            const job = await JobRepository.getJobById(req.params.id)
+            const job = await jobRepository.getJobById(req.params.id)
             res.render('applicant-list', {
                 includeHeader: true,
                 data: job,
@@ -178,8 +167,8 @@ export default class JobController {
         try {
             const application = res.locals.application
             const currentJobId = res.locals.currentJobId
-            await JobRepository.addApplicantToJob(currentJobId, application._id)
-            const { companyName, jobDesign } = await JobRepository.getJobById(currentJobId)
+            await jobRepository.addApplicantToJob(currentJobId, application._id)
+            const { companyName, jobDesign } = await jobRepository.getJobById(currentJobId)
             res.locals.mailInfo = {
                 applicantName: application.name,
                 applicantEmail: application.email,

@@ -19,13 +19,13 @@ jobRouter.get('/add', auth,
 // get user's posted jobs
 jobRouter.get('/postedJobs', auth,
     (req,res,next) => {
-        jobController.getPostedJobListing(req,res,next)
+        jobController.getPostedJob(req,res,next)
     }
 )
 
 // route for updating job 
 // (followed by adding jobid to user)
-jobRouter.post('/jobs/add', auth,
+jobRouter.post('/add', auth,
     validateJob,
     (req,res,next) => {
         jobController.postNewJob(req,res,next)
@@ -34,12 +34,12 @@ jobRouter.post('/jobs/add', auth,
 )
 
 // specific job routes
-jobRouter.get('/jobs/:id',
+jobRouter.get('/:id',
     (req,res,next) => {
         jobController.getJobDetails(req,res,next)
     }
 )
-jobRouter.get('/jobs/:id/update', auth,
+jobRouter.get('/:id/update', auth,
     (req,res,next) => {
         jobController.getUpdateJob(req,res,next)
     }
@@ -53,7 +53,7 @@ jobRouter.post('/jobs/:id/update', auth,
 
 // route for deleting job 
 // (followed by deleting job applications if present)
-jobRouter.post('/jobs/:id/delete', auth,
+jobRouter.post('/:id/delete', auth,
     (res,res,next) => {
         jobController.postDeleteJob(req,res,next)
     }
@@ -62,14 +62,14 @@ jobRouter.post('/jobs/:id/delete', auth,
 )
 
 // display job applicants
-jobRouter.get('/jobs/:id/applicants', auth,
+jobRouter.get('/:id/applicants', auth,
     (req,res,next) => {
         jobController.getJobApplicants(req,res,next)
     }
 )
 
 // applying job
-jobRouter.get('/jobs/:id/apply',
+jobRouter.get('/:id/apply',
     (req,res,next) => {
         applicantControllerObj.getJobApplication(req,res,next)
     }
@@ -78,7 +78,7 @@ jobRouter.get('/jobs/:id/apply',
 // route for applying job application 
 // (followed by adding applicants to respective jobs)
 // (followed by sending mail to the applicant)
-jobRouter.post('/jobs/:id/apply',
+jobRouter.post('/:id/apply',
     uploadFile.single('resumePath'), 
     validateJobApplication,
     deleteFileOnValidationError,

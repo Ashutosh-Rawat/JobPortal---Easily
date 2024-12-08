@@ -1,41 +1,46 @@
 import { Schema, model } from 'mongoose'
 
 const jobSchema = new Schema({
-    jobCategory: {
+    category: {
         type: String,
-        required: ['jobCategory not provided']
+        required: ['job category is required']
     },
-    jobDesign: {
+    designation: {
         type: String,
-        required: ['jobDesign not provided']
+        required: ['job designation is required']
     },
-    jobLocation: {
+    location: {
         type: String,
-        required: ['jobLocation not provided']
+        required: ['job location is required']
     },
     companyName: {
         type: String,
-        required: ['companyName not provided']
+        required: ['company name is required']
     },
     salary: {
         type: Number,
-        required: ['salary not provided']
+        required: ['salary is required']
     },
     applyBy: {
         type: Date,
-        required: ['applyBy date not provided']
+        required: ['apply by date is required']
     },
-    skillsRequired: {
+    skills: {
         type: [String],
-        required: ['skillsRequired not provided']
+        required: ['skills required']
     },
-    numberOfOpenings: {
+    openings: {
         type: Number,
-        required: ['numberOfOpenings not provided']
+        min: [1, 'job openings should be at least 1'],
+        required: ['number of openings are required'],
     },
-    jobPosted: {
+    postedDate: {
         type: Date,
         default: Date.now
+    },
+    recruiter: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     },
     applicants: [
         {

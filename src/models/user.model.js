@@ -6,12 +6,12 @@ const userFilePath = path.resolve('src','data','users.json')
 export default class UserModel {
     static _users = []
 
-    constructor({name, email, pass, jobsPosted=[]}) {
+    constructor({name, email, pass}) {
         this.userId = UserModel.generateUserId()
         this.name = name
         this.email = email
         this.pass = pass
-        this.jobsPosted = jobsPosted
+        this.postedJobs = []
         this.lastVisit = false
     }
 
@@ -47,7 +47,7 @@ export default class UserModel {
         return jobsPosted
     }
 
-    static jobsPostedList(userid) {
+    static async jobsPosted(userid) {
         return UserModel._users.find(user => 
             user.userId==userid 
         ).jobsPosted

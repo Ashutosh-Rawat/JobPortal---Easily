@@ -37,7 +37,7 @@ export default class UserController {
         // login message
         console.log('user logged in:', email)
         // start the session for current user
-        req.session.currentUser = { ...isUser }
+        req.session.userId = isUser._id
         const lastVisit = req.session.currentUser.lastVisit || new Date().toLocaleString()
         req.session.currentUser.lastVisit = lastVisit
         UserModel.setLastVisit(isUser.userId, lastVisit)
