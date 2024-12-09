@@ -8,6 +8,7 @@ export class ApplicationError extends Error {
 
 const applicationErrorHandler = (err, req, res, next) => {
     if (err instanceof ApplicationError) {
+        console.log(`url: ${req.url}`)
         console.error(`[${new Date().toISOString()}] Code: ${err.code}, Message: ${err.message}`)
         req.session.err = err
         res.status(err.code).redirect('/err')

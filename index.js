@@ -10,7 +10,7 @@ import userRouter from './src/routes/user.routes.js'
 import jobRouter from './src/routes/job.routes.js'
 import applicantRouter from './src/routes/applicant.routes.js'
 // functional middlewares
-import applicationErrorHandler from './src/middlewares/ApplicationError.middleware.js'
+import applicationErrorHandler, {ApplicationError} from './src/middlewares/ApplicationError.middleware.js'
 // functional controllers
 import getHome from './src/controllers/home.controller.js'
 import getError from './src/controllers/error.controller.js'

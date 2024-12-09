@@ -12,7 +12,9 @@ export default class UserController {
 
     getRegister(req, res, next) {
         try {
-            res.status(200).render('register', { includeHeader: true, errors: null })
+            res.status(200).render('register', { 
+                    includeHeader: true, errors: null
+            })
         } catch (error) {
             next(error)
         }
@@ -33,7 +35,9 @@ export default class UserController {
 
     getLogin(req, res, next) {
         try {
-            res.status(200).render('login', { includeHeader: true, err: false })
+            res.status(200).render('login', { 
+                includeHeader: true, err: false,
+            })
         } catch (error) {
             next(error)
         }

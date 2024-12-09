@@ -1,18 +1,43 @@
-<div class="home-body mt-4">
-  <div class="left-section">
-    <h1 class="career-goals-header">Achieve Your Career Goals</h1>
+<section class="hero-section text-center" style="background-image: url('https://source.unsplash.com/1600x900/?office,teamwork'); background-size: cover; background-position: center; height: 100vh;">
+  <div class="glass-container">
+    <h1 class="fw-bold text-dark">Welcome to <span style="color: var(--secondary-color);">Easily</span></h1>
+    <p class="lead text-muted">Your career is just a step away. Find your dream job or hire top talent today.</p>
     <% if (locals.currentUser && locals.currentUser.lastVisit) { %>
-      <p class="last-visit">Your last visit was on <%= locals.currentUser.lastVisit %></p>
+      <p class="small text-muted">Last Visit: <%= locals.currentUser.lastVisit %></p>
+    <% } else { %>
+      <p class="small text-muted">Welcome! Start exploring opportunities.</p>
     <% } %>
-    <div class="options">
-      <a href="/jobs" class="btn btn-outline-primary">See Jobs</a>
-      <% if(locals.currentUser) { %>
-        <a href="/postedJobs" class="btn btn-outline-secondary">See Posted Jobs</a>
+    <div class="mt-4">
+      <a href="/jobs" class="btn btn-primary btn-lg custom-btn">See Job Listings</a>
+      <% if (!locals.currentUser) { %>
+        <a href="/recruiter-login" class="btn btn-secondary btn-lg custom-btn-secondary">Recruiter Login</a>
       <% } %>
     </div>
   </div>
-  <div class="right-section d-flex flex-column">
-    <h2 class="belief-text">We believe in a</h2>
-    <img src="images/illustration.png" class="banner-image" alt="" srcset="">
+</section>
+
+<section class="features-section text-center py-5">
+  <div class="container">
+    <h2 class="fw-bold text-primary mb-4">Why Choose Us?</h2>
+    <div class="row mt-4 gx-4">
+      <div class="col-md-4">
+        <div class="job-tile glass-tile-gradient-1">
+          <h4 class="text-dark">Massive Network</h4>
+          <p class="text-muted">Connect with hundreds of employers and find the perfect fit.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="job-tile glass-tile-gradient-2">
+          <h4 class="text-dark">Smart Tools</h4>
+          <p class="text-muted">Our tools are designed to make job search easy and efficient.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="job-tile glass-tile-gradient-3">
+          <h4 class="text-dark">Career Growth</h4>
+          <p class="text-muted">Find roles that push your boundaries and enhance your career.</p>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</section>

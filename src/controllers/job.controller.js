@@ -10,7 +10,9 @@ export default class JobController {
     async listJobs(req, res, next) {
         try {
             const jobs = await this.jobRepo.listJobs()
-            res.status(200).render('job-listing', { jobs, includeHeader: true })
+            res.status(200).render('job-listing', { 
+                data:jobs, includeHeader: true, currentUser: req.session.currentUser
+            })
         } catch (error) {
             next(error)
         }
@@ -22,7 +24,9 @@ export default class JobController {
             if (!job) {
                 throw new Error('Job not found')
             }
-            res.status(200).render('job-details', { job, includeHeader: true })
+            res.status(200).render('job-details', { 
+                job, includeHeader: true
+            })
         } catch (error) {
             next(error)
         }

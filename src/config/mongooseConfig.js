@@ -19,9 +19,9 @@ const connectMongoose = async() => {
 const loadJobCategories = async() => {
     const categories = await CategoryModel.find()
     if(!categories || !categories.length) {
-        await jobCategoryModel.insertMany(jobCategories)
+        await CategoryModel.insertMany(jobCategories)
+        console.log('job categories added')
     }
-    console.log('job categories added')
 }
 
 export default connectMongoose
