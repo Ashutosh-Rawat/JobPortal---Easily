@@ -1,7 +1,7 @@
-<header class="navbar navbar-expand-lg navbar-light fixed-top bg-white shadow-sm">
+<header class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
   <div class="container">
     <a class="navbar-brand text-primary fw-bold" href="/">Easily</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
@@ -12,23 +12,40 @@
         <li class="nav-item">
           <a class="nav-link" href="/jobs">Jobs</a>
         </li>
-      </ul>
-      <ul class="navbar-nav ms-auto">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-primary" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Get Started
-          </a>
+          <button class="nav-link dropdown-toggle btn btn-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            See Job Listings
+          </button>
           <ul class="dropdown-menu">
-            <% if (!locals.currentUser) { %>
-              <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a></li>
-              <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#registerModal">Register</a></li>
-            <% } else { %>
-              <li><a class="dropdown-item" href="/jobs/add">Post a Job</a></li>
-              <li><a class="dropdown-item" href="/logout">Logout</a></li>
+            <li><a class="dropdown-item" href="/jobs">Job List</a></li>
+            <li><a class="dropdown-item" href="/category">Job Category</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <button class="nav-link dropdown-toggle btn btn-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Pages
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/user/login">Login</a></li>
+            <li><a class="dropdown-item" href="/user/register">Register</a></li>
+            <% if (locals.currentUser) { %>
+              <li><a class="dropdown-item" href="/jobs/add">Post A Job</a></li>
             <% } %>
           </ul>
         </li>
       </ul>
+      <% if (locals.currentUser) { %>
+        <div class="nav-item dropdown ms-3">
+          <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="<%= locals.currentUser.profileImage || '/images/default-avatar.png' %>" alt="Profile" class="avatar-circle">
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/change-pass">Update Password</a></li>
+            <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
+            <li><a class="dropdown-item" href="/user/delete">Delete User</a></li>
+          </ul>
+        </div>
+      <% } %>
     </div>
   </div>
 </header>

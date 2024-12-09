@@ -6,7 +6,7 @@
     --dark-bg-color: #2c3e50;
     --text-color: #212529;
     --header-bg-color: rgba(255, 255, 255, 0.95);
-    --button-hover-darken: 10%;
+    /* --header-bg-color: #66bb6a; */
     --font-normal: 'Roboto', sans-serif;
     --font-emphasized: 'Montserrat', sans-serif;
     --border-radius: 8px;
@@ -18,6 +18,8 @@ body {
     font-family: var(--font-normal);
     background-color: var(--bg-color);
     color: var(--text-color);
+    margin: 0;
+    padding: 0;
 }
 
 a {
@@ -42,7 +44,7 @@ a:hover {
 }
 
 .btn-primary:hover {
-    background-color: darken(var(--primary-color), var(--button-hover-darken));
+    filter: brightness(85%);
 }
 
 .btn-secondary {
@@ -52,59 +54,5 @@ a:hover {
 }
 
 .btn-secondary:hover {
-    background-color: darken(var(--secondary-color), var(--button-hover-darken));
-}
-
-/* Hero Section */
-.hero-section {
-    background: linear-gradient(45deg, var(--primary-color), var(--bg-color));
-    height: 100vh;
-    color: white;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.glass-container {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    border-radius: var(--border-radius);
-    padding: 2rem;
-    margin-top: 10%;
-    box-shadow: var(--shadow-dark);
-}
-
-/* Features Section */
-.features-section {
-    padding: 2rem;
-    background-color: var(--bg-color);
-}
-
-.job-tile {
-    padding: 1.5rem;
-    border-radius: var(--border-radius);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    color: var(--text-color);
-}
-
-.job-tile:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-dark);
-}
-
-/* Glassy Gradients */
-.glass-tile-gradient-1 {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(0, 123, 255, 0.5));
-    backdrop-filter: blur(8px);
-}
-
-.glass-tile-gradient-2 {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(40, 167, 69, 0.5));
-    backdrop-filter: blur(8px);
-}
-
-.glass-tile-gradient-3 {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 87, 51, 0.5));
-    backdrop-filter: blur(8px);
+    filter: brightness(85%);
 }
