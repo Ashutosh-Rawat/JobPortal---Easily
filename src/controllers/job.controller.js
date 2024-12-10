@@ -1,8 +1,10 @@
 import JobRepository from '../repositories/job.repository.js'
 import ApplicantRepository from '../repositories/applicant.repository.js'
+import UserRepository from '../repositories/user.repository.js'
 
 export default class JobController {
     constructor() {
+        this.UserRepo = UserRepository
         this.jobRepo = JobRepository
         this.applicantRepo = ApplicantRepository
     }
@@ -69,24 +71,13 @@ export default class JobController {
         }
     }
 
-    async addApplicant(req, res, next) {
+    applyToJob(req,res,next) {
         try {
-            const job = await this.jobRepo.addApplicantToJob(req.params.id, req.body.applicantId)
-            if (!job) throw new Error('Job not found')
-
-            res.redirect(`/job/${job._id}`)
-        } catch (error) {
-            next(error)
-        }
-    }
-
-    async removeApplicant(req, res, next) {
-        try {
-            const job = await this.jobRepo.removeApplicantFromJob(req.params.id, req.body.applicantId)
-            if (!job) throw new Error('Job not found')
-
-            res.redirect(`/job/${job._id}`)
-        } catch (error) {
+            //  first import the req.body 
+            //  get the filelocation from req.filepath or sth
+            //  call the applicant repo for adding applicant using form
+            //  get the applicant id and use add applicanttojob 
+        } catch(error) {
             next(error)
         }
     }

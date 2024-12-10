@@ -1,4 +1,5 @@
 import JobModel from '../models/job.model.js'
+import { Types } from 'mongoose'
 
 class JobRepository {
     async listJobs() {
@@ -31,6 +32,10 @@ class JobRepository {
             const job = new JobModel(jobDetails)
             await job.save()
             console.log('Job created:', job)
+
+            // Add job ID to the user's list of posted jobs
+            await UserRepository.addJobToUser(job.postedBy, job._id)
+
             return job
         } catch (error) {
             console.error('Error creating job:', error)
@@ -51,6 +56,12 @@ class JobRepository {
         try {
             const deletedJob = await JobModel.findByIdAndDelete(jobId)
             console.log(`Job deleted: ${jobId}`)
+
+            if (deletedJob) {
+                // Remove job ID from user's postedJobs list
+                await UserRepository.removeJobFromUser(deletedJob.postedBy, jobId)
+            }
+
             return deletedJob
         } catch (error) {
             console.error(`Error deleting job with ID ${jobId}:`, error)
@@ -61,7 +72,7 @@ class JobRepository {
         try {
             const job = await JobModel.findByIdAndUpdate(
                 jobId,
-                { $push: { applicants: applicantId } },
+                { $push: { applicants: Types.ObjectId(applicantId) } },
                 { new: true }
             )
             console.log(`Applicant added to job: ${applicantId} -> ${jobId}`)
@@ -75,7 +86,7 @@ class JobRepository {
         try {
             const job = await JobModel.findByIdAndUpdate(
                 jobId,
-                { $pull: { applicants: applicantId } },
+                { $pull: { applicants: Types.ObjectId(applicantId) } },
                 { new: true }
             )
             console.log(`Applicant removed from job: ${applicantId} -> ${jobId}`)

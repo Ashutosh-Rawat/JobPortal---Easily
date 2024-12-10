@@ -13,13 +13,11 @@ export default class UserController {
     async postRegister(req, res, next) {
         const { name, email, pass } = req.body
         try {
-            console.log('started')
             const hashedPassword = await hashPassword(pass)
-            console.log(`hash generated: ${hashPassword}`)
             const user = await this.userRepo.addUser({ name, email, pass: hashedPassword })
             const token = createToken({ id: user._id, name: user.name, email: user.email })
-            console.log(`token: ${token}`)
             res.cookie('token', token, { httpOnly: true })
+            console.log(`user registered: ${email}`)
             res.redirect('/')
         } catch (error) {
             console.log(error)
@@ -34,11 +32,11 @@ export default class UserController {
             if (!user || !(await comparePassword(pass, user.pass))) {
                 throw new Error('Incorrect login credentials')
             }
-    
+
             // Update last visit in the database
             const now = new Date().toISOString()
             await this.userRepo.setLastVisit(user._id, now)
-    
+
             const token = createToken({ id: user._id, name: user.name, email: user.email })
             res.cookie('token', token, { httpOnly: true })
             res.redirect('/')
@@ -47,7 +45,6 @@ export default class UserController {
             next(error)
         }
     }
-    
 
     getLogout(req, res, next) {
         try {
@@ -87,10 +84,19 @@ export default class UserController {
 
     async postDeleteUser(req, res, next) {
         try {
-            const jobsPosted = await this.userRepo.deleteUser(req.user.id)
-            res.locals.jobsPosted = jobsPosted
-            res.locals.proceed = true
-            next()
+            const user = await this.userRepo.deleteUser(req.user.id)
+            if (user) {
+                // Delete all jobs posted by the user
+                await this.jobRepo.deleteMany({ _id: { $in: user.postedJobs } })
+                // Delete all applicants associated with those jobs
+                await this.applicantRepo.deleteMany({ jobId: { $in: user.postedJobs } })
+                console.log(`User and their posted jobs deleted: ${user.email}`)
+                res.locals.jobsPosted = user.postedJobs
+                res.locals.proceed = true
+                next()
+            } else {
+                throw new Error('User not found')
+            }
         } catch (error) {
             console.log(error)
             next(error)

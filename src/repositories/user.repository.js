@@ -16,14 +16,6 @@ class UserRepository {
     async deleteUser(userId) {
         try {
             const user = await UserModel.findByIdAndDelete(userId)
-            if (user) {
-                await JobModel.deleteMany({ _id: { $in: user.postedJobs } })
-                await ApplicantModel.deleteMany({ jobId: { $in: user.postedJobs } })
-                console.log(`User and their posted jobs deleted: ${user.email}`)
-                return user
-            } else {
-                throw new Error('User not found')
-            }
         } catch (error) {
             console.error('Error deleting user:', error)
             throw new Error('Error deleting user')
@@ -42,7 +34,10 @@ class UserRepository {
 
     async updateUserPassword(email, newPassword) {
         try {
-            const user = await UserModel.findOneAndUpdate({ email }, { pass: newPassword }, { new: true })
+            const user = await UserModel.findOneAndUpdate(
+                { email }, 
+                { pass: newPassword }, { new: true }
+            )
             if (user) {
                 console.log(`Password updated for user: ${email}`)
                 return user
@@ -57,7 +52,10 @@ class UserRepository {
 
     async setLastVisit(userId, val) {
         try {
-            const user = await UserModel.findByIdAndUpdate(userId, { lastVisit: val }, { new: true })
+            const user = await UserModel.findByIdAndUpdate(
+                userId, 
+                { lastVisit: val }, { new: true }
+            )
             if (user) {
                 console.log(`Last visit updated for user: ${user.email}`)
                 return user

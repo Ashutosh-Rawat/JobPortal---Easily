@@ -1,8 +1,6 @@
 import { Router } from 'express'
 import JobController from '../controllers/job.controller.js'
 import { jwtAuth } from '../auth/jwt.auth.js'
-// import validateJob from '../middlewares/jobFormValidation.middleware.js'
-import validateJobApplication from '../middlewares/validateJobApplication.middleware.js'
 import deleteFileOnValidationError from '../middlewares/deleteFileValidation.middware.js'
 import sendMail from '../middlewares/sendMail.middleware.js'
 
@@ -13,13 +11,6 @@ const jobController = new JobController()
 jobRouter.get('/', 
     (req, res, next) => {
         jobController.listJobs(req, res, next)
-    }
-)
-
-// Path to display form for adding a job
-jobRouter.get('/add', jwtAuth,
-    (req, res, next) => {
-        res.render('add-job', { includeHeader: true })
     }
 )
 
@@ -55,7 +46,6 @@ jobRouter.post('/:id/delete', jwtAuth,
 
 // Path to apply for a job
 jobRouter.post('/:id/apply', jwtAuth,
-    validateJobApplication,
     deleteFileOnValidationError,
     (req, res, next) => {
         jobController.applyToJob(req, res, next)

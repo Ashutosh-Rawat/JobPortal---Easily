@@ -1,47 +1,6 @@
 // main.js
-// load register and login form when clicked
-document.addEventListener('DOMContentLoaded', () => {
-  const loginForm = document.getElementById('loginForm')
-  const registerForm = document.getElementById('registerForm')
 
-  if (loginForm) {
-    const submitButton = document.getElementById('loginSubmitBtn')
-    if (submitButton) {
-      submitButton.addEventListener('click', validateLoginForm)
-    }
-  }
-
-  if (registerForm) {
-    const submitButton = document.getElementById('registerSubmitBtn')
-    if (submitButton) {
-      submitButton.addEventListener('click', validateRegisterForm)
-    }
-  }
-})
-
-// login for validations
-function validateLoginForm(event) {
-  const email = document.getElementById('email')
-  const password = document.getElementById('password')
-
-  if (!email.value || !password.value) {
-    alert('Please fill out all fields.')
-    event.preventDefault()
-  }
-}
-// registeration form validations
-function validateRegisterForm(event) {
-  const name = document.getElementById('name')
-  const email = document.getElementById('email')
-  const password = document.getElementById('password')
-
-  if (!name.value || !email.value || !password.value) {
-    alert('Please fill out all fields.')
-    event.preventDefault()
-  }
-}
-  
-// Delete user function confimation
+// Delete user function confirmation
 async function getDeleteUser() {
   const res = confirm('Are you sure, this will delete all your posted jobs and data?')
   if (res) {
@@ -52,7 +11,7 @@ async function getDeleteUser() {
     if (request.ok) window.location.href = '/'
   }
 }
-  
+
 // Delete job function confirmation
 async function getDeleteJobAuth(jobid) {
   const res = confirm('Are you sure you want to delete this job application?')
@@ -64,14 +23,14 @@ async function getDeleteJobAuth(jobid) {
     if (request.ok) window.location.href = '/jobs'
   }
 }
-  
+
 // Update job function confirmation
 async function getUpdateJobAuth() {
   const res = confirm('Are you sure you want to update this job application?')
   if (res) document.getElementById('updateJobForm').submit()
 }
-  
-// search bar 
+
+// Search bar visibility toggle
 document.addEventListener('DOMContentLoaded', () => {
   const jobSearchForm = document.getElementById('jobSearchForm')
 
@@ -84,11 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 })
-  
+
+// Perform search
 function searchJobs() {
   const query = document.getElementById('jobSearch').value.trim().toLowerCase()
   if (!query) return
 
   window.location.href = `/jobs?search=${encodeURIComponent(query)}`
 }
-  

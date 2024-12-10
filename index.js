@@ -49,7 +49,8 @@ app.get('/err', getError)
 app.use('/user', userRouter)
 app.use('/jobs', jobRouter)
 app.use('/applicant', applicantRouter)
-
+// ignore favicon request
+app.get('/favicon.ico', (req, res) => res.status(204))
 // Error handler middleware
 app.use(applicationErrorHandler)
 // Handling invalid routes
