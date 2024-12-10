@@ -10,39 +10,23 @@ export default class UserController {
         this.applicantRepo = ApplicantRepository
     }
 
-    getRegister(req, res, next) {
-        try {
-            res.status(200).render('register', { 
-                    includeHeader: true, errors: null
-            })
-        } catch (error) {
-            next(error)
-        }
-    }
-
     async postRegister(req, res, next) {
         const { name, email, pass } = req.body
         try {
+            console.log('started')
             const hashedPassword = await hashPassword(pass)
+            console.log(`hash generated: ${hashPassword}`)
             const user = await this.userRepo.addUser({ name, email, pass: hashedPassword })
             const token = createToken({ id: user._id, name: user.name, email: user.email })
+            console.log(`token: ${token}`)
             res.cookie('token', token, { httpOnly: true })
             res.redirect('/')
         } catch (error) {
+            console.log(error)
             next(error)
         }
     }
-
-    getLogin(req, res, next) {
-        try {
-            res.status(200).render('login', { 
-                includeHeader: true, err: false,
-            })
-        } catch (error) {
-            next(error)
-        }
-    }
-
+    
     async postLogin(req, res, next) {
         const { email, pass } = req.body
         try {
@@ -59,6 +43,7 @@ export default class UserController {
             res.cookie('token', token, { httpOnly: true })
             res.redirect('/')
         } catch (error) {
+            console.log(error)
             next(error)
         }
     }
@@ -69,6 +54,7 @@ export default class UserController {
             clearToken(res)
             res.redirect('/')
         } catch (error) {
+            console.log(error)
             next(error)
         }
     }
@@ -78,6 +64,7 @@ export default class UserController {
             res.locals.currentUser = req.user
             res.status(200).render('change-pass', { includeHeader: true, err: false })
         } catch (error) {
+            console.log(error)
             next(error)
         }
     }
@@ -93,6 +80,7 @@ export default class UserController {
             await this.userRepo.updateUserPassword(req.user.email, hashedPassword)
             res.redirect('/')
         } catch (error) {
+            console.log(error)
             next(error)
         }
     }
@@ -104,6 +92,7 @@ export default class UserController {
             res.locals.proceed = true
             next()
         } catch (error) {
+            console.log(error)
             next(error)
         }
     }
@@ -114,6 +103,7 @@ export default class UserController {
             req.user = await this.userRepo.addPostedJobId(req.user.id, newJobId)
             res.redirect('/jobs')
         } catch (error) {
+            console.log(error)
             next(error)
         }
     }

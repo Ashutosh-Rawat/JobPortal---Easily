@@ -1,7 +1,6 @@
 [
   {
-    "userId": 1001,
-    "name": "Arun Pratap",
+    "name": "Coding Ninjas",
     "email": "codingninjas2k16@gmail.com",
     "pass": "slwvvlczduktvhdj",
     "jobsPosted": [
@@ -11,7 +10,6 @@
     "lastVisit": null
   },
   {
-    "userId": 1002,
     "name": "testing user",
     "email": "no.name.236.23@gmail.com",
     "pass": "abcdef8*",

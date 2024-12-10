@@ -50,15 +50,15 @@ app.use('/user', userRouter)
 app.use('/jobs', jobRouter)
 app.use('/applicant', applicantRouter)
 
+// Error handler middleware
+app.use(applicationErrorHandler)
 // Handling invalid routes
 app.use((req, res, next) => {
+    console.log(req.url)
     next(new ApplicationError({
         code: 404, message: 'Route not found' 
         })
     )
 })
-
-// Error handler middleware
-app.use(applicationErrorHandler)
 
 export default app

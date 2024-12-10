@@ -9,6 +9,15 @@ class JobRepository {
         }
     }
 
+    async searchJobs(query) {
+        try {
+            const regex = new RegExp(query, 'i')
+            return await JobModel.find({ designation: regex })
+        } catch (error) {
+            console.error(`Error searching jobs by designation "${query}":`, error)
+        }
+    }
+
     async findJobById(jobId) {
         try {
             return await JobModel.findById(jobId).populate('applicants')

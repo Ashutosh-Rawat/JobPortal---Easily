@@ -13,11 +13,13 @@
           <label for="jobCategory">Job Category</label>
           <select class="form-control" id="jobCategory" name="jobCategory" required>
             <option value="">--Select Category--</option>
-            <% jobs.forEach(job => { %>
-              <option value="<%= job.jobCategory %>">
-                <%= job.jobCategory %>
-              </option>
-            <% }) %>
+            <% if(jobs) { %>
+              <% jobs.forEach(job => { %>
+                <option value="<%= job.jobCategory %>">
+                  <%= job.jobCategory %>
+                </option>
+              <% }) %>
+            <% } %>
           </select>
         </div>
         <div class="form-group col-md-6">

@@ -9,9 +9,17 @@ export default class JobController {
 
     async listJobs(req, res, next) {
         try {
-            const jobs = await this.jobRepo.listJobs()
+            const { search } = req.query
+            let jobs
+
+            if (search) {
+                jobs = await this.jobRepo.searchJobs(search)
+            } else {
+                jobs = await this.jobRepo.listJobs()
+            }
+
             res.status(200).render('job-listing', { 
-                data:jobs, includeHeader: true, currentUser: req.session.currentUser
+                data: jobs, includeHeader: true, currentUser: req.session.currentUser
             })
         } catch (error) {
             next(error)
@@ -21,9 +29,8 @@ export default class JobController {
     async getJobDetails(req, res, next) {
         try {
             const job = await this.jobRepo.findJobById(req.params.id)
-            if (!job) {
-                throw new Error('Job not found')
-            }
+            if (!job) throw new Error('Job not found')
+
             res.status(200).render('job-details', { 
                 job, includeHeader: true
             })
@@ -45,9 +52,8 @@ export default class JobController {
     async updateJob(req, res, next) {
         try {
             const updatedJob = await this.jobRepo.updateJob(req.params.id, req.body)
-            if (!updatedJob) {
-                throw new Error('Job not found')
-            }
+            if (!updatedJob) throw new Error('Job not found')
+
             res.redirect(`/job/${updatedJob._id}`)
         } catch (error) {
             next(error)
@@ -66,9 +72,8 @@ export default class JobController {
     async addApplicant(req, res, next) {
         try {
             const job = await this.jobRepo.addApplicantToJob(req.params.id, req.body.applicantId)
-            if (!job) {
-                throw new Error('Job not found')
-            }
+            if (!job) throw new Error('Job not found')
+
             res.redirect(`/job/${job._id}`)
         } catch (error) {
             next(error)
@@ -78,9 +83,8 @@ export default class JobController {
     async removeApplicant(req, res, next) {
         try {
             const job = await this.jobRepo.removeApplicantFromJob(req.params.id, req.body.applicantId)
-            if (!job) {
-                throw new Error('Job not found')
-            }
+            if (!job) throw new Error('Job not found')
+
             res.redirect(`/job/${job._id}`)
         } catch (error) {
             next(error)

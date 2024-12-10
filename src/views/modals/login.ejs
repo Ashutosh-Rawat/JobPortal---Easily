@@ -2,18 +2,18 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Welcome Back</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <h5 class="modal-title" id="loginModalLabel">Welcome Back</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="loginForm" action="/login" method="POST">
+        <form id="loginForm" action="/user/login" method="POST">
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" name="email" class="form-control" required>
+            <input type="email" name="email" class="form-control" id="email" required>
           </div>
           <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input type="password" name="pass" class="form-control" required>
+            <input type="password" name="pass" class="form-control" id="password" required>
           </div>
           <button type="submit" class="btn btn-primary w-100">Login</button>
         </form>

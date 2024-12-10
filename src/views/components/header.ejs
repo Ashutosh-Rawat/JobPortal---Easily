@@ -9,43 +9,51 @@
         <li class="nav-item">
           <a class="nav-link" href="/">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/jobs">Jobs</a>
-        </li>
         <li class="nav-item dropdown">
           <button class="nav-link dropdown-toggle btn btn-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            See Job Listings
+            Jobs
           </button>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/jobs">Job List</a></li>
-            <li><a class="dropdown-item" href="/category">Job Category</a></li>
-          </ul>
-        </li>
-        <li class="nav-item dropdown">
-          <button class="nav-link dropdown-toggle btn btn-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Pages
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/user/login">Login</a></li>
-            <li><a class="dropdown-item" href="/user/register">Register</a></li>
-            <% if (locals.currentUser) { %>
-              <li><a class="dropdown-item" href="/jobs/add">Post A Job</a></li>
-            <% } %>
+            <li><a class="dropdown-item" href="/jobs">Job Listings</a></li>
+            <li><a class="dropdown-item" href="/category">Job Categories</a></li>
           </ul>
         </li>
       </ul>
-      <% if (locals.currentUser) { %>
-        <div class="nav-item dropdown ms-3">
-          <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="<%= locals.currentUser.profileImage || '/images/default-avatar.png' %>" alt="Profile" class="avatar-circle">
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/change-pass">Update Password</a></li>
-            <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
-            <li><a class="dropdown-item" href="/user/delete">Delete User</a></li>
-          </ul>
-        </div>
-      <% } %>
+      <ul class="navbar-nav ms-auto d-flex align-items-center">
+        <% if (!locals.currentUser) { %>
+          <li class="nav-item dropdown">
+            <button class="nav-link dropdown-toggle btn btn-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Access Account
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+              </li>
+              <li>
+                <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
+              </li>
+            </ul>
+          </li>
+        <% } else { %>
+          <li class="nav-item">
+            <a href="/jobs/add" class="btn btn-secondary me-2">Post A Job</a>
+          </li>
+          <li class="nav-item dropdown">
+            <button class="nav-link dropdown-toggle btn btn-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="<%= locals.currentUser.profileImage || '/images/default-avatar.png' %>" alt="Profile" class="avatar-circle">
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/change-pass">Update Password</a></li>
+              <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
+              <li><a class="dropdown-item" href="/user/delete">Delete Account</a></li>
+            </ul>
+          </li>
+        <% } %>
+        <form class="d-flex ms-3 search-bar d-none" id="jobSearchForm">
+          <input class="form-control me-2 search-input" type="search" placeholder="Search jobs..." id="jobSearch" aria-label="Search">
+          <button class="btn btn-outline-primary search-button" type="button" onclick="searchJobs()">Search</button>
+        </form>
+      </ul>
     </div>
   </div>
 </header>

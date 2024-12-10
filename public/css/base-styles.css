@@ -1,12 +1,11 @@
 :root {
-    --primary-color: #007bff;
-    --secondary-color: #28a745;
-    --accent-color: #ff5733;
-    --bg-color: #f8f9fa;
-    --dark-bg-color: #2c3e50;
-    --text-color: #212529;
-    --header-bg-color: rgba(255, 255, 255, 0.95);
-    /* --header-bg-color: #66bb6a; */
+    --primary-color: #007bff; /* Vibrant Blue */
+    --secondary-color: #28a745; /* Fresh Green */
+    --accent-color: #ff5733; /* Bright Red */
+    --bg-color: #f8f9fa; /* Soft Light Grey */
+    --dark-bg-color: #2c3e50; /* Dark Blue-Grey */
+    --text-color: #212529; /* Deep Blue */
+    --header-bg-color: rgba(255, 255, 255, 0.95); /* Semi-transparent White */
     --font-normal: 'Roboto', sans-serif;
     --font-emphasized: 'Montserrat', sans-serif;
     --border-radius: 8px;
@@ -18,8 +17,6 @@ body {
     font-family: var(--font-normal);
     background-color: var(--bg-color);
     color: var(--text-color);
-    margin: 0;
-    padding: 0;
 }
 
 a {
@@ -54,5 +51,61 @@ a:hover {
 }
 
 .btn-secondary:hover {
+    background-color: var(--secondary-color);
     filter: brightness(85%);
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(45deg, var(--primary-color), var(--bg-color));
+    color: white;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.glass-container {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    margin-top: 4rem;
+    box-shadow: var(--shadow-dark);
+}
+
+/* Features Section */
+.features-section {
+    padding: 2rem;
+    background-color: var(--bg-color);
+}
+
+.job-tile {
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: var(--text-color);
+    background-clip: content-box, padding-box;
+    backdrop-filter: blur(10px);
+}
+
+.job-tile:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-dark);
+}
+
+/* Glassy Gradients */
+.glass-tile-gradient-1 {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(0, 123, 255, 0.5));
+    backdrop-filter: blur(8px);
+}
+
+.glass-tile-gradient-2 {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(40, 167, 69, 0.5));
+    backdrop-filter: blur(8px);
+}
+
+.glass-tile-gradient-3 {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 87, 51, 0.5));
+    backdrop-filter: blur(8px);
 }
