@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="btns d-flex gap-2 mt-5">
-        <% if(!locals.currentUser) { %>
+        <% if(!locals.user) { %>
           <a href="/jobs/<%= data.jobId %>/apply" class="btn btn-outline-secondary">Apply Now</a>
         <% } else { %>
           <% if(data.applicants && data.applicants.length) { %>

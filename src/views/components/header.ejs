@@ -20,7 +20,7 @@
         </li>
       </ul>
       <ul class="navbar-nav ms-auto d-flex align-items-center">
-        <% if (!locals.currentUser) { %>
+        <% if (!locals.user) { %>
           <li class="nav-item dropdown">
             <button class="nav-link dropdown-toggle btn btn-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               Access Account
@@ -36,11 +36,11 @@
           </li>
         <% } else { %>
           <li class="nav-item">
-            <a href="/jobs/add" class="btn btn-secondary me-2">Post A Job</a>
+            <button class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#addJobModal">Post A Job</button>
           </li>
           <li class="nav-item dropdown">
             <button class="nav-link dropdown-toggle btn btn-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="<%= locals.currentUser.profileImage || '/images/default-avatar.png' %>" alt="Profile" class="avatar-circle">
+              <img src="<%= locals.user.profileImage || '/images/default-avatar.png' %>" alt="Profile" class="avatar-circle">
             </button>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="/change-pass">Update Password</a></li>
@@ -49,10 +49,6 @@
             </ul>
           </li>
         <% } %>
-        <form class="d-flex ms-3 search-bar d-none" id="jobSearchForm">
-          <input class="form-control me-2 search-input" type="search" placeholder="Search jobs..." id="jobSearch" aria-label="Search">
-          <button class="btn btn-outline-primary search-button" type="button" onclick="searchJobs()">Search</button>
-        </form>
       </ul>
     </div>
   </div>
