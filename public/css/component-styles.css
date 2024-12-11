@@ -55,3 +55,32 @@
     font-size: 1rem;
 }
   
+
+/* Icon Styling */
+.bi {
+    font-size: 1.2rem;
+}
+
+/* Skills Grid */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 0.5rem;
+}
+
+.skill-pill {
+    display: inline-block;
+    padding: 0.4rem 0.7rem;
+    background-color: var(--secondary-color);
+    color: white;
+    text-align: center;
+    font-size: 0.85rem;
+    border-radius: 4px; /* Low border radius for rectangular pill shape */
+    box-shadow: var(--shadow-light);
+    transition: transform 0.2s ease;
+}
+
+.skill-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-dark);
+}
