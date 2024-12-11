@@ -1,58 +1,70 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
-<div class="container">
-  <div class="inner-container">
-    <h1 class="text-center mb-3">Update Job</h1>
-    <% if (locals.formErr) { %>
-      <div class="alert alert-danger">
-        <%= locals.formErr %>
+<!-- Job Update Modal -->
+<div class="modal fade" id="updateJobModal" tabindex="-1" aria-labelledby="updateJobModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateJobModalLabel">Update Job</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-    <% } %>
-    <form id="updateJobForm" action="update" method="POST">
-      <input type="hidden" id="jobId" name="jobId" value="<%= data.jobId %>">
-      <input type="hidden" id="jobCategory" name="jobCategory" value="<%= data.jobCategory %>">
-      <input type="hidden" id="jobDesign" name="jobDesign" value="<%= data.jobDesign %>">
-      <input type="hidden" id="companyName" name="companyName" value="<%= data.companyName %>">
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="jobCategoryDisplay">Job Category</label>
-          <input type="text" class="form-control" id="jobCategoryDisplay" value="<%= data.jobCategory %>" disabled>
-        </div>
-        <div class="form-group col-md-6">
-          <label for="jobDesignDisplay">Job Designation</label>
-          <input type="text" class="form-control" id="jobDesignDisplay" value="<%= data.jobDesign %>" disabled>
-        </div>
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <form id="updateJobForm" method="POST" action="/jobs/update">
+          <!-- Category Select -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="jobCategory" class="form-label">Job Category</label>
+              <select id="jobCategory" class="form-select" required>
+                <!-- Options populated via JavaScript -->
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="designation" class="form-label">Job Designation</label>
+              <input type="text" id="designation" name="designation" class="form-control" required>
+            </div>
+          </div>
+          <!-- Location -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="location" class="form-label">Job Location</label>
+              <input type="text" id="location" name="location" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <label for="companyName" class="form-label">Company Name</label>
+              <input type="text" id="companyName" name="companyName" class="form-control" required>
+            </div>
+          </div>
+          <!-- Salary -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="salary" class="form-label">Salary</label>
+              <input type="number" id="salary" name="salary" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <label for="applyBy" class="form-label">Apply By Date</label>
+              <input type="date" id="applyBy" name="applyBy" class="form-control" required>
+            </div>
+          </div>
+          <!-- Skills Required -->
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label for="skillsRequired" class="form-label">Skills Required</label>
+              <select id="skillsRequired" name="skills[]" class="form-select" multiple required>
+                <!-- Options populated via JavaScript -->
+              </select>
+            </div>
+          </div>
+          <!-- Openings -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="openings" class="form-label">Number of Openings</label>
+              <input type="number" id="openings" name="openings" class="form-control" min="1" required>
+            </div>
+          </div>
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-primary">Update Job</button>
+        </form>
       </div>
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="jobLocation">Job Location</label>
-          <input type="text" class="form-control" id="jobLocation" name="jobLocation" value="<%= data.jobLocation %>" required>
-        </div>
-        <div class="form-group col-md-6">
-          <label for="companyNameDisplay">Company Name</label>
-          <input type="text" class="form-control" id="companyNameDisplay" value="<%= data.companyName %>" disabled>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="salary">Salary</label>
-          <input type="text" class="form-control" id="salary" name="salary" value="<%= data.salary %>" required>
-        </div>
-        <div class="form-group col-md-6">
-          <label for="applyBy">Apply By</label>
-          <input type="date" class="form-control" id="applyBy" name="applyBy" value="<%= data.applyBy %>" required>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="skillsRequired">Skills Required</label>
-        <select id="skillsRequired" name="skillsRequired" class="form-control" multiple></select>
-      </div>
-      <div class="form-group">
-        <label for="numberOfOpenings">Number of Openings</label>
-        <input type="number" class="form-control" id="numberOfOpenings" name="numberOfOpenings" value="<%= data.numberOfOpenings %>" required>
-      </div>
-      <button type="button" onclick="getUpdateJobAuth('<%= data.jobId %>')" class="btn btn-outline-primary">Update Job</button>
-    </form>
+    </div>
   </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-<script src="/js/jobDesignations.js" type="module"></script>
