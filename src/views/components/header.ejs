@@ -16,6 +16,12 @@
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="/jobs">Job Listings</a></li>
             <li><a class="dropdown-item" href="/category">Job Categories</a></li>
+            <% if(locals.user) { %>
+              <li>
+                <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addJobModal">Add Job</button>
+              </li>
+              <li><a class="dropdown-item" href="/jobs/postedJobs">See Posted Jobs</a></li>
+            <% } %>
           </ul>
         </li>
       </ul>
@@ -34,9 +40,18 @@
               </li>
             </ul>
           </li>
+          <li class="nav-item">
+            <form class="d-flex mx-2 search-bar d-none" id="jobSearchForm">
+              <input class="form-control me-2 search-input" type="search" placeholder="Search jobs..." id="jobSearch" aria-label="Search">
+              <button class="btn btn-outline-primary search-button" type="button" onclick="searchJobs()">Search</button>
+            </form>
+          </li>
         <% } else { %>
           <li class="nav-item">
-            <button class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#addJobModal">Post A Job</button>
+            <form class="d-flex mx-2 search-bar d-none" id="jobSearchForm">
+              <input class="form-control me-2 search-input" type="search" placeholder="Search jobs..." id="jobSearch" aria-label="Search">
+              <button class="btn btn-outline-primary search-button" type="button" onclick="searchJobs()">Search</button>
+            </form>
           </li>
           <li class="nav-item dropdown">
             <button class="nav-link dropdown-toggle btn btn-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
