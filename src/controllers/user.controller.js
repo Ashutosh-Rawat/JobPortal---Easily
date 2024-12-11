@@ -32,13 +32,18 @@ export default class UserController {
             if (!user || !(await comparePassword(pass, user.pass))) {
                 throw new Error('Incorrect login credentials')
             }
-
+            // get the user object
+            const userObj = { 
+                id: user._id, name: user.name, 
+                email: user.email, lastVisit: user.lastVisit 
+            }
             // Update last visit in the database
             const now = new Date().toISOString()
             await this.userRepo.setLastVisit(user._id, now)
-
-            const token = createToken({ id: user._id, name: user.name, email: user.email })
+            const token = createToken(userObj)
             res.cookie('token', token, { httpOnly: true })
+            req.session.user = userObj
+            console.log(`user logged in: ${req.session.user.email}`)
             res.redirect('/')
         } catch (error) {
             console.log(error)
@@ -49,6 +54,9 @@ export default class UserController {
     getLogout(req, res, next) {
         try {
             clearToken(res)
+            const logged_user = req.session.user.email
+            req.session.user = null
+            console.log(`user logged out: ${logged_user}`)
             res.redirect('/')
         } catch (error) {
             console.log(error)
@@ -58,7 +66,7 @@ export default class UserController {
 
     getChangePassword(req, res, next) {
         try {
-            res.locals.currentUser = req.user
+            res.locals.user = req.user
             res.status(200).render('change-pass', { includeHeader: true, err: false })
         } catch (error) {
             console.log(error)

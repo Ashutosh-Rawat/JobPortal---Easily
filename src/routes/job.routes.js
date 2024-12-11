@@ -22,6 +22,11 @@ jobRouter.post('/add', jwtAuth,
     }
 )
 
+jobRouter.get('/categories', 
+    (req, res, next) => 
+        jobController.getJobCategories(req, res, next)
+)
+
 // Path to view job details
 jobRouter.get('/:id', 
     (req, res, next) => {

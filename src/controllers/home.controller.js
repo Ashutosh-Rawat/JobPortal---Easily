@@ -1,7 +1,7 @@
 const getHome = (req,res) => { 
     res.render('home',{
         includeHeader: true,
-        currentUser: req.session.currentUser
+        user: req.session.user
     })
 }
 export default getHome

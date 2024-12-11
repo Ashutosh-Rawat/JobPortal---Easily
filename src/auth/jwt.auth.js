@@ -29,8 +29,7 @@ export const jwtAuth = (req, res, next) => {
         return res.status(401).redirect('/login')
     }
     try {
-        const decoded = jwt.verify(token, secret)
-        req.user = decoded
+        jwt.verify(token, secret)
         next()
     } catch (err) {
         res.status(401).redirect('/login')

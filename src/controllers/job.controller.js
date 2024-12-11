@@ -1,12 +1,14 @@
 import JobRepository from '../repositories/job.repository.js'
 import ApplicantRepository from '../repositories/applicant.repository.js'
 import UserRepository from '../repositories/user.repository.js'
+import CategoryRepository from '../repositories/category.repository.js'
 
 export default class JobController {
     constructor() {
         this.userRepo = UserRepository
         this.jobRepo = JobRepository
         this.applicantRepo = ApplicantRepository
+        this.categoryRepo = CategoryRepository
     }
 
     async listJobs(req, res, next) {
@@ -21,7 +23,7 @@ export default class JobController {
             }
 
             res.status(200).render('job-listing', { 
-                data: jobs, includeHeader: true, currentUser: req.session.currentUser
+                data: jobs, includeHeader: true, user: req.session.user
             })
         } catch (error) {
             next(error)
@@ -30,12 +32,14 @@ export default class JobController {
 
     async getJobDetails(req, res, next) {
         try {
-            const job = await this.jobRepo.findJobById(req.params.id)
-            if (!job) throw new Error('Job not found')
-
-            res.status(200).render('job-details', { 
-                job, includeHeader: true
-            })
+            if(req.params.id) {
+                const job = await this.jobRepo.findJobById(req.params.id)
+                if (!job) throw new Error('Job not found')
+    
+                res.status(200).render('job-details', { 
+                    job, includeHeader: true
+                })
+            }
         } catch (error) {
             next(error)
         }
@@ -94,5 +98,15 @@ export default class JobController {
             next(error)
         }
     }
+
+    async getJobCategories(req, res, next) {
+        try {
+            const categories = await this.categoryRepo.getCategories()
+            res.json(categories)
+        } catch (error) {
+            next(error)
+        }
+    }
+    
     
 }

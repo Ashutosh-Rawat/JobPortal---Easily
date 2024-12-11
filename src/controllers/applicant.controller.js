@@ -1,11 +1,12 @@
 import path from 'path'
 import ApplicantModel from '../models/applicant.model.js'
+import userModel from '../models/user.model.js'
 
 export default class ApplicantController {
     getJobApplication(req,res) {
         res.render('job-application', {
             includeHeader: true,
-            currentUser: req.session.currentUser,
+            user: req.session.user,
             errors: null
         })
     }
@@ -31,8 +32,7 @@ export default class ApplicantController {
             const applicantIds = res.locals.applicantList
             if(applicantIds && applicantIds.length)
                 await ApplicantModel.deleteApplicants(applicantIds)
-            if(res.locals.proceed) next()
-            else res.redirect(302, '/jobs')
+            res.redirect(302, '/jobs')
         }
         catch(err) {
             console.log(err)
