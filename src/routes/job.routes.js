@@ -22,6 +22,13 @@ jobRouter.post('/add', jwtAuth,
     }
 )
 
+jobRouter.get('/postedJobs', jwtAuth,
+    // get posted jobs by user
+    (req,res,next) => {
+        jobController.getPostedJobs(req,res,next)
+    }
+)
+
 jobRouter.get('/categories', 
     (req, res, next) => 
         jobController.getJobCategories(req, res, next)

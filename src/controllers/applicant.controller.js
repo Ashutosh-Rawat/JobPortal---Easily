@@ -1,6 +1,5 @@
 import path from 'path'
 import ApplicantModel from '../models/applicant.model.js'
-import userModel from '../models/user.model.js'
 
 export default class ApplicantController {
     getJobApplication(req,res) {

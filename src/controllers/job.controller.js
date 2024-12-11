@@ -30,6 +30,17 @@ export default class JobController {
         }
     }
 
+    async getPostedJobs(req,res,next) {
+        try {
+            const jobs = await this.jobRepo.postedJobs(req.session.user.id)
+            res.status(200).render('job-listing', { 
+                data: jobs, includeHeader: true, user: req.session.user
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
     async getJobDetails(req, res, next) {
         try {
             if(req.params.id) {
@@ -47,9 +58,9 @@ export default class JobController {
 
     async createJob(req, res, next) {
         try {
-            const jobDetails = { ...req.body, postedBy: req.user.id }
+            const jobDetails = { ...req.body, postedBy: req.session.user.id }
             const newJob = await this.jobRepo.createJob(jobDetails)
-            await this.userRepo.addJobToUser(req.user.id, newJob._id)
+            await this.userRepo.addJobToUser(req.session.user.id, newJob._id)
             res.status(302).redirect(`/job/${newJob._id}`)
         } catch (error) {
             next(error)
@@ -70,7 +81,7 @@ export default class JobController {
     async deleteJob(req, res, next) {
         try {
             const deletedJob = await this.jobRepo.deleteJob(req.params.id)
-            await this.userRepo.removeJobFromUser(req.user.id, deletedJob._id)
+            await this.userRepo.removeJobFromUser(req.session.user.id, deletedJob._id)
             res.status(302).redirect('/jobs')
         } catch (error) {
             next(error)

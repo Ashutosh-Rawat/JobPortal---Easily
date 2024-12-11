@@ -10,6 +10,14 @@ class JobRepository {
         }
     }
 
+    async postedJobs(userId) {
+        try {
+            return await JobModel.find({recruiter: Types.ObjectId(userId)})
+        } catch(error) {
+            console.log('error finding posted jobs: ', error)
+        }
+    }
+
     async searchJobs(query) {
         try {
             const regex = new RegExp(query, 'i')
@@ -33,9 +41,6 @@ class JobRepository {
             await job.save()
             console.log('Job created:', job)
 
-            // Add job ID to the user's list of posted jobs
-            await UserRepository.addJobToUser(job.postedBy, job._id)
-
             return job
         } catch (error) {
             console.error('Error creating job:', error)
@@ -56,12 +61,6 @@ class JobRepository {
         try {
             const deletedJob = await JobModel.findByIdAndDelete(jobId)
             console.log(`Job deleted: ${jobId}`)
-
-            if (deletedJob) {
-                // Remove job ID from user's postedJobs list
-                await UserRepository.removeJobFromUser(deletedJob.postedBy, jobId)
-            }
-
             return deletedJob
         } catch (error) {
             console.error(`Error deleting job with ID ${jobId}:`, error)

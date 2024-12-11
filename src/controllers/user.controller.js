@@ -77,7 +77,7 @@ export default class UserController {
     async postChangePassword(req, res, next) {
         const { currentPassword, newPassword } = req.body
         try {
-            const user = await this.userRepo.getUserByEmail(req.user.email)
+            const user = await this.userRepo.getUserByEmail(req.session.user.email)
             if (!user || !(await comparePassword(currentPassword, user.pass))) {
                 throw new Error('Incorrect current password')
             }
@@ -92,7 +92,7 @@ export default class UserController {
 
     async postDeleteUser(req, res, next) {
         try {
-            const user = await this.userRepo.deleteUser(req.user.id)
+            const user = await this.userRepo.deleteUser(req.session.user.id)
             if (user) {
                 // Delete all jobs posted by the user
                 await this.jobRepo.deleteMany({ _id: { $in: user.postedJobs } })
@@ -114,7 +114,7 @@ export default class UserController {
     async postUpdateJobPosted(req, res) {
         try {
             const newJobId = res.locals.newJobId
-            req.user = await this.userRepo.addPostedJobId(req.user.id, newJobId)
+            req.user = await this.userRepo.addPostedJobId(req.session.user.id, newJobId)
             res.redirect('/jobs')
         } catch (error) {
             console.log(error)
@@ -125,7 +125,7 @@ export default class UserController {
     async postDeleteJobId(req, res) {
         try {
             const deleteJob = res.locals.deleteJob
-            req.user = await this.userRepo.deletePostedJobId(req.user.id, deleteJob)
+            req.user = await this.userRepo.deletePostedJobId(req.session.user.id, deleteJob)
             res.redirect('/jobs')
         } catch (error) {
             next(error)
