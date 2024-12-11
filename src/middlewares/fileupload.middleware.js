@@ -1,17 +1,40 @@
 import multer from 'multer'
+import { GridFsStorage } from 'multer-gridfs-storage'
+import mongoose from 'mongoose'
 
-const storageConfig = multer.diskStorage({
-    destination: (req,file,cb) => {
-        cb(null,'public/savedResumes/')
-    },
-    filename: (req,file,cb) => {
-        const fileName = Date.now()+'-'+file.originalname
-        cb(null,fileName)
+// MongoDB URI
+const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/yourDatabaseName'
+
+// Create a Mongoose connection
+const connection = mongoose.createConnection(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+
+// GridFS Storage Configuration
+const storage = new GridFsStorage({
+    db: connection,
+    file: (req, file) => {
+        const fileInfo = {
+            filename: `${Date.now()}-${file.originalname}`,
+            bucketName: 'resumes'
+        }
+        return fileInfo
     }
 })
 
-const uploadFile = multer({
-    storage: storageConfig
-})
+// Multer configuration
+const upload = multer({ storage }).single('resume')
 
-export default uploadFile
+export default (req, res, next) => {
+    upload(req, res, (err) => {
+        if (err) {
+            return next(new Error('File upload failed: ' + err.message))
+        }
+        if (req.file) {
+            req.body.resumePath = req.file.id
+            req.body.filename = req.file.filename
+        }
+        next()
+    })
+}

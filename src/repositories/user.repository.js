@@ -1,4 +1,5 @@
 import UserModel from '../models/user.model.js'
+import {Types} from 'mongoose'
 
 class UserRepository {
     async addUser(userData) {
@@ -16,6 +17,7 @@ class UserRepository {
     async deleteUser(userId) {
         try {
             const user = await UserModel.findByIdAndDelete(userId)
+            return user
         } catch (error) {
             console.error('Error deleting user:', error)
             throw new Error('Error deleting user')
@@ -67,7 +69,44 @@ class UserRepository {
             throw new Error('Error setting last visit')
         }
     }
-}
 
+    async addJobToUser(userId, jobId) {
+        try {
+            const user = await UserModel.findByIdAndUpdate(
+                userId,
+                { $push: { postedJobs: Types.ObjectId(jobId) } },
+                { new: true }
+            )
+            if (user) {
+                console.log(`Job ${jobId} added to user ${userId}`)
+                return user
+            } else {
+                throw new Error('User not found')
+            }
+        } catch (error) {
+            console.error(`Error adding job ${jobId} to user ${userId}:`, error)
+            throw new Error('Error adding job to user')
+        }
+    }
+
+    async removeJobFromUser(userId, jobId) {
+        try {
+            const user = await UserModel.findByIdAndUpdate(
+                userId,
+                { $pull: { postedJobs: Types.ObjectId(jobId) } },
+                { new: true }
+            )
+            if (user) {
+                console.log(`Job ${jobId} removed from user ${userId}`)
+                return user
+            } else {
+                throw new Error('User not found')
+            }
+        } catch (error) {
+            console.error(`Error removing job ${jobId} from user ${userId}:`, error)
+            throw new Error('Error removing job from user')
+        }
+    }
+}
 
 export default new UserRepository()

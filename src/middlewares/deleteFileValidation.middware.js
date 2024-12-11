@@ -1,24 +1,27 @@
-import fs from 'fs'
-import path from 'path'
+import { GridFSBucket } from 'mongodb'
+import mongoose from 'mongoose'
 
-const deleteFileOnValidationError = (req, res, next) => {
-  const errors = res.locals.errors
-  if (!errors.isEmpty() && req.file) {
-    const filePath = path.join('public/savedResumes', req.file.filename)
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error('Failed to delete file:', err)
-      }
-      console.log('uploaded file deleted on validation error')
-      return res.status(400).render('job-application', {
-        includeHeader: true,
-        errors: errors.array(),
-        currentUser: req.session.currentUser
-      })
-    })
-  } else {
-    next()
-  }
+const deleteFileOnValidationError = async (req, res, next) => {
+    // If no file ID, skip the middleware
+    if (!req.body.resumePath) {
+        return next()
+    }
+
+    try {
+        // Assuming `resumePath` holds the GridFS file ID
+        const db = mongoose.connection.db
+        const bucket = new GridFSBucket(db, { bucketName: 'resumes' })
+
+        req.on('validationFailed', async () => {
+            // Delete the uploaded file from GridFS if validation fails
+            const fileId = new mongoose.Schema.Types.ObjectId(req.body.resumePath)
+            await bucket.delete(fileId)
+        })
+
+        next()
+    } catch (error) {
+        next(error)
+    }
 }
 
 export default deleteFileOnValidationError

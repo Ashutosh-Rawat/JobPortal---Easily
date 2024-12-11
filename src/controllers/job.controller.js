@@ -4,7 +4,7 @@ import UserRepository from '../repositories/user.repository.js'
 
 export default class JobController {
     constructor() {
-        this.UserRepo = UserRepository
+        this.userRepo = UserRepository
         this.jobRepo = JobRepository
         this.applicantRepo = ApplicantRepository
     }
@@ -45,7 +45,8 @@ export default class JobController {
         try {
             const jobDetails = { ...req.body, postedBy: req.user.id }
             const newJob = await this.jobRepo.createJob(jobDetails)
-            res.redirect(`/job/${newJob._id}`)
+            await this.userRepo.addJobToUser(req.user.id, newJob._id)
+            res.status(302).redirect(`/job/${newJob._id}`)
         } catch (error) {
             next(error)
         }
@@ -56,7 +57,7 @@ export default class JobController {
             const updatedJob = await this.jobRepo.updateJob(req.params.id, req.body)
             if (!updatedJob) throw new Error('Job not found')
 
-            res.redirect(`/job/${updatedJob._id}`)
+            res.status(302).redirect(`/job/${updatedJob._id}`)
         } catch (error) {
             next(error)
         }
@@ -64,21 +65,34 @@ export default class JobController {
 
     async deleteJob(req, res, next) {
         try {
-            await this.jobRepo.deleteJob(req.params.id)
-            res.redirect('/jobs')
+            const deletedJob = await this.jobRepo.deleteJob(req.params.id)
+            await this.userRepo.removeJobFromUser(req.user.id, deletedJob._id)
+            res.status(302).redirect('/jobs')
         } catch (error) {
             next(error)
         }
     }
 
-    applyToJob(req,res,next) {
+    async applyToJob(req, res, next) {
         try {
-            //  first import the req.body 
-            //  get the filelocation from req.filepath or sth
-            //  call the applicant repo for adding applicant using form
-            //  get the applicant id and use add applicanttojob 
-        } catch(error) {
+            // Example: Validate the request
+            if (!req.body.name || !req.body.email || !req.body.resumePath) {
+                req.emit('validationFailed') // Trigger file deletion
+                throw new Error('Validation failed: Missing required fields')
+            }
+    
+            // Proceed with applicant creation and job linking
+            const applicantData = { ...req.body }
+            const newApplicant = await this.applicantRepo.createApplicant(applicantData)
+            if (!newApplicant) throw new Error('Failed to create applicant')
+    
+            const updatedJob = await this.jobRepo.addApplicantToJob(req.params.id, newApplicant._id)
+            if (!updatedJob) throw new Error('Failed to link applicant to the job')
+    
+            res.status(302).redirect('/jobs')
+        } catch (error) {
             next(error)
         }
     }
+    
 }
