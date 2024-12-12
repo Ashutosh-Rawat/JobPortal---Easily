@@ -74,7 +74,7 @@ class UserRepository {
         try {
             const user = await UserModel.findByIdAndUpdate(
                 userId,
-                { $push: { postedJobs: Types.ObjectId(jobId) } },
+                { $push: { postedJobs: new Types.ObjectId(jobId) } },
                 { new: true }
             )
             if (user) {
@@ -93,7 +93,7 @@ class UserRepository {
         try {
             const user = await UserModel.findByIdAndUpdate(
                 userId,
-                { $pull: { postedJobs: Types.ObjectId(jobId) } },
+                { $pull: { postedJobs: new Types.ObjectId(jobId) } },
                 { new: true }
             )
             if (user) {

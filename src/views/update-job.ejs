@@ -10,39 +10,19 @@
       <!-- Modal Body -->
       <div class="modal-body">
         <form id="updateJobForm" method="POST" action="/jobs/update">
-          <!-- Category Select -->
+          <!-- Job Category -->
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="jobCategory" class="form-label">Job Category</label>
               <select id="jobCategory" class="form-select" required>
-                <!-- Options populated via JavaScript -->
+                <!-- Options populated dynamically -->
               </select>
             </div>
             <div class="col-md-6">
               <label for="designation" class="form-label">Job Designation</label>
-              <input type="text" id="designation" name="designation" class="form-control" required>
-            </div>
-          </div>
-          <!-- Location -->
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="location" class="form-label">Job Location</label>
-              <input type="text" id="location" name="location" class="form-control" required>
-            </div>
-            <div class="col-md-6">
-              <label for="companyName" class="form-label">Company Name</label>
-              <input type="text" id="companyName" name="companyName" class="form-control" required>
-            </div>
-          </div>
-          <!-- Salary -->
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="salary" class="form-label">Salary</label>
-              <input type="number" id="salary" name="salary" class="form-control" required>
-            </div>
-            <div class="col-md-6">
-              <label for="applyBy" class="form-label">Apply By Date</label>
-              <input type="date" id="applyBy" name="applyBy" class="form-control" required>
+              <select id="designation" class="form-select" name="designation" required>
+                <!-- Options populated dynamically -->
+              </select>
             </div>
           </div>
           <!-- Skills Required -->
@@ -50,7 +30,7 @@
             <div class="col-md-12">
               <label for="skillsRequired" class="form-label">Skills Required</label>
               <select id="skillsRequired" name="skills[]" class="form-select" multiple required>
-                <!-- Options populated via JavaScript -->
+                <!-- Options populated dynamically -->
               </select>
             </div>
           </div>

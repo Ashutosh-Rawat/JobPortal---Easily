@@ -1,38 +1,45 @@
-// Manage job categories and skills
+import jobCategories from '../jobCategories.js'
+
 export function manageCategoryActions() {
-    const categorySelect = document.getElementById('jobCategory')
-    const skillsSelect = document.getElementById('skillsRequired')
-  
-    if (categorySelect && skillsSelect) {
-      fetch('/jobs/categories')
-        .then(response => response.json())
-        .then(categories => {
-          // Populate categories dropdown
-          categories.forEach(category => {
-            const option = document.createElement('option')
-            option.value = category.jobCategory
-            option.textContent = category.jobCategory
-            categorySelect.appendChild(option)
-          })
-  
-          // Update skills dropdown on category change
-          categorySelect.addEventListener('change', () => {
-            const selectedCategory = categories.find(cat => cat.jobCategory === categorySelect.value)
-            skillsSelect.innerHTML = '' // Clear previous options
-            if (selectedCategory && selectedCategory.skillsNeeded) {
-              selectedCategory.skillsNeeded.forEach(skill => {
-                const option = document.createElement('option')
-                option.value = skill
-                option.textContent = skill
-                skillsSelect.appendChild(option)
-              })
-            }
-          })
-  
-          // Set default job category to empty
-          categorySelect.value = ''
-        })
-        .catch(error => console.error('Error loading categories:', error))
+  const jobCategorySelect = document.getElementById('jobCategory')
+  const skillsSelect = document.getElementById('skillsRequired')
+  const designationSelect = document.getElementById('designation')
+
+  // Populate job category dropdown
+  jobCategorySelect.innerHTML = ''
+  jobCategories.forEach(category => {
+    const option = document.createElement('option')
+    option.value = category.jobCategory
+    option.text = category.jobCategory
+    jobCategorySelect.appendChild(option)
+  })
+
+  // Handle category change to update skills and designations
+  jobCategorySelect.addEventListener('change', () => {
+    const selectedCategory = jobCategories.find(
+      category => category.jobCategory === jobCategorySelect.value
+    )
+
+    // Update Skills
+    skillsSelect.innerHTML = ''
+    if (selectedCategory) {
+      selectedCategory.skillsNeeded.forEach(skill => {
+        const option = document.createElement('option')
+        option.value = skill
+        option.text = skill
+        skillsSelect.appendChild(option)
+      })
     }
+
+    // Update Designations
+    designationSelect.innerHTML = ''
+    if (selectedCategory) {
+      selectedCategory.jobNames.forEach(designation => {
+        const option = document.createElement('option')
+        option.value = designation
+        option.text = designation
+        designationSelect.appendChild(option)
+      })
+    }
+  })
 }
-  

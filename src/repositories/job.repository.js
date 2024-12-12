@@ -12,7 +12,7 @@ class JobRepository {
 
     async postedJobs(userId) {
         try {
-            return await JobModel.find({recruiter: Types.ObjectId(userId)})
+            return await JobModel.find({recruiter: new Types.ObjectId(userId)})
         } catch(error) {
             console.log('error finding posted jobs: ', error)
         }
@@ -71,7 +71,7 @@ class JobRepository {
         try {
             const job = await JobModel.findByIdAndUpdate(
                 jobId,
-                { $push: { applicants: Types.ObjectId(applicantId) } },
+                { $push: { applicants: new Types.ObjectId(applicantId) } },
                 { new: true }
             )
             console.log(`Applicant added to job: ${applicantId} -> ${jobId}`)
@@ -85,7 +85,7 @@ class JobRepository {
         try {
             const job = await JobModel.findByIdAndUpdate(
                 jobId,
-                { $pull: { applicants: Types.ObjectId(applicantId) } },
+                { $pull: { applicants: new Types.ObjectId(applicantId) } },
                 { new: true }
             )
             console.log(`Applicant removed from job: ${applicantId} -> ${jobId}`)

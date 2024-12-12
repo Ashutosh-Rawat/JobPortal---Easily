@@ -1,6 +1,6 @@
 <header class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
   <div class="container">
-    <a class="navbar-brand text-primary fw-bold" href="/">Easily</a>
+    <a class="navbar-brand text-primary fw-bold p-0" href="/">Easily</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -33,10 +33,10 @@
             </button>
             <ul class="dropdown-menu">
               <li>
-                <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-backdrop="static" data-bs-keyboard="false">Login</button>
               </li>
               <li>
-                <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
+                <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-backdrop="static" data-bs-keyboard="false">Register</button>
               </li>
             </ul>
           </li>
@@ -54,7 +54,7 @@
             </form>
           </li>
           <li class="nav-item dropdown">
-            <button class="nav-link dropdown-toggle btn btn-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="nav-link dropdown-toggle btn btn-link p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               <img src="<%= locals.user.profileImage || '/images/default-avatar.png' %>" alt="Profile" class="avatar-circle">
             </button>
             <ul class="dropdown-menu">

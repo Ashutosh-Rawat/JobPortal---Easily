@@ -10,17 +10,19 @@
       <!-- Modal Body -->
       <div class="modal-body">
         <form id="addJobForm" method="POST" action="/jobs/add">
-          <!-- Category Select -->
+          <!-- Job Category -->
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="jobCategory" class="form-label">Job Category</label>
               <select id="jobCategory" class="form-select" required>
-                <!-- Options populated via JavaScript -->
+                <!-- Options populated dynamically -->
               </select>
             </div>
             <div class="col-md-6">
               <label for="designation" class="form-label">Job Designation</label>
-              <input type="text" id="designation" name="designation" class="form-control" required>
+              <select id="designation" class="form-select" name="designation" required>
+                <!-- Options populated dynamically -->
+              </select>
             </div>
           </div>
           <!-- Location -->
@@ -50,7 +52,7 @@
             <div class="col-md-12">
               <label for="skillsRequired" class="form-label">Skills Required</label>
               <select id="skillsRequired" name="skills[]" class="form-select" multiple required>
-                <!-- Options populated via JavaScript -->
+                <!-- Options populated dynamically -->
               </select>
             </div>
           </div>
