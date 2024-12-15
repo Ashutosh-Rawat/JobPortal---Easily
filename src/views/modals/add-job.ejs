@@ -3,30 +3,37 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <!-- Modal Header -->
-      <div class="modal-header">
+      <div class="modal-header bg-primary text-white">
         <h5 class="modal-title" id="addJobModalLabel">Add Job</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <!-- Modal Body -->
       <div class="modal-body">
         <form id="addJobForm" method="POST" action="/jobs/add">
-          <!-- Job Category -->
-          <div class="row mb-3">
+          <!-- Category and Designation -->
+          <div class="row mb-4">
             <div class="col-md-6">
               <label for="jobCategory" class="form-label">Job Category</label>
               <select id="jobCategory" class="form-select" required>
-                <!-- Options populated dynamically -->
+                <!-- Populated dynamically -->
               </select>
             </div>
             <div class="col-md-6">
-              <label for="designation" class="form-label">Job Designation</label>
-              <select id="designation" class="form-select" name="designation" required>
-                <!-- Options populated dynamically -->
+              <label for="jobDesignation" class="form-label">Job Designation</label>
+              <select id="jobDesignation" name="designation" class="form-select" required>
+                <!-- Populated dynamically -->
               </select>
             </div>
           </div>
-          <!-- Location -->
-          <div class="row mb-3">
+          <!-- Skills Required -->
+          <div class="mb-4">
+            <label class="form-label">Skills Required</label>
+            <div id="skillsContainer" class="d-flex flex-wrap gap-2">
+              <!-- Skills checkboxes generated dynamically -->
+            </div>
+          </div>
+          <!-- Other Fields -->
+          <div class="row mb-4">
             <div class="col-md-6">
               <label for="location" class="form-label">Job Location</label>
               <input type="text" id="location" name="location" class="form-control" required>
@@ -36,8 +43,7 @@
               <input type="text" id="companyName" name="companyName" class="form-control" required>
             </div>
           </div>
-          <!-- Salary -->
-          <div class="row mb-3">
+          <div class="row mb-4">
             <div class="col-md-6">
               <label for="salary" class="form-label">Salary</label>
               <input type="number" id="salary" name="salary" class="form-control" required>
@@ -47,24 +53,14 @@
               <input type="date" id="applyBy" name="applyBy" class="form-control" required>
             </div>
           </div>
-          <!-- Skills Required -->
-          <div class="row mb-3">
-            <div class="col-md-12">
-              <label for="skillsRequired" class="form-label">Skills Required</label>
-              <select id="skillsRequired" name="skills[]" class="form-select" multiple required>
-                <!-- Options populated dynamically -->
-              </select>
-            </div>
-          </div>
-          <!-- Openings -->
-          <div class="row mb-3">
+          <div class="row mb-4">
             <div class="col-md-6">
               <label for="openings" class="form-label">Number of Openings</label>
               <input type="number" id="openings" name="openings" class="form-control" min="1" required>
             </div>
           </div>
           <!-- Submit Button -->
-          <button type="submit" class="btn btn-primary">Add Job</button>
+          <button type="submit" class="btn btn-success w-100">Add Job</button>
         </form>
       </div>
     </div>

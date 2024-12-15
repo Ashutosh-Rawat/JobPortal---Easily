@@ -1,45 +1,58 @@
 import jobCategories from '../jobCategories.js'
 
 export function manageCategoryActions() {
-  const jobCategorySelect = document.getElementById('jobCategory')
-  const skillsSelect = document.getElementById('skillsRequired')
-  const designationSelect = document.getElementById('designation')
+  const jobCategorySelects = document.querySelectorAll('#jobCategory') // Handles both add and update modals
+  const jobDesignationSelects = document.querySelectorAll('#jobDesignation')
+  const skillsContainers = document.querySelectorAll('#skillsContainer')
 
   // Populate job category dropdown
-  jobCategorySelect.innerHTML = ''
-  jobCategories.forEach(category => {
-    const option = document.createElement('option')
-    option.value = category.jobCategory
-    option.text = category.jobCategory
-    jobCategorySelect.appendChild(option)
+  jobCategorySelects.forEach(select => {
+    select.innerHTML = '<option value="">Select a Category</option>'
+    jobCategories.forEach(category => {
+      const option = document.createElement('option')
+      option.value = category.jobCategory
+      option.text = category.jobCategory
+      select.appendChild(option)
+    })
   })
 
   // Handle category change to update skills and designations
-  jobCategorySelect.addEventListener('change', () => {
-    const selectedCategory = jobCategories.find(
-      category => category.jobCategory === jobCategorySelect.value
-    )
+  jobCategorySelects.forEach((jobCategorySelect, index) => {
+    const jobDesignationSelect = jobDesignationSelects[index]
+    const skillsContainer = skillsContainers[index]
 
-    // Update Skills
-    skillsSelect.innerHTML = ''
-    if (selectedCategory) {
-      selectedCategory.skillsNeeded.forEach(skill => {
-        const option = document.createElement('option')
-        option.value = skill
-        option.text = skill
-        skillsSelect.appendChild(option)
-      })
-    }
+    jobCategorySelect.addEventListener('change', () => {
+      const selectedCategory = jobCategories.find(
+        category => category.jobCategory === jobCategorySelect.value
+      )
 
-    // Update Designations
-    designationSelect.innerHTML = ''
-    if (selectedCategory) {
-      selectedCategory.jobNames.forEach(designation => {
-        const option = document.createElement('option')
-        option.value = designation
-        option.text = designation
-        designationSelect.appendChild(option)
-      })
-    }
+      // Update Designation Dropdown
+      jobDesignationSelect.innerHTML = '<option value="">Select a Designation</option>'
+      if (selectedCategory) {
+        selectedCategory.jobNames.forEach(designation => {
+          const option = document.createElement('option')
+          option.value = designation
+          option.text = designation
+          jobDesignationSelect.appendChild(option)
+        })
+      }
+
+      // Update Skills Checkboxes
+      skillsContainer.innerHTML = ''
+      if (selectedCategory) {
+        selectedCategory.skillsNeeded.forEach(skill => {
+          const div = document.createElement('div')
+          div.classList.add('form-check', 'me-3')
+          div.innerHTML = `
+            <input class="form-check-input" type="checkbox" name="skills[]" value="${skill}" id="skill-${skill}">
+            <label class="form-check-label" for="skill-${skill}">${skill}</label>
+          `
+          skillsContainer.appendChild(div)
+        })
+      }
+    })
+
+    // Trigger change event initially to populate fields if preselected
+    jobCategorySelect.dispatchEvent(new Event('change'))
   })
 }

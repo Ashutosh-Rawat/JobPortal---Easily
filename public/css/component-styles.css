@@ -84,3 +84,31 @@
     transform: translateY(-2px);
     box-shadow: var(--shadow-dark);
 }
+
+/* Enhance form look */
+.form-label {
+    font-weight: bold;
+}
+  
+.form-select, .form-control {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#skillsContainer {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+#skillsContainer label {
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.btn-primary, .btn-success, .btn-warning {
+    border-radius: 20px;
+}
+  

@@ -1,6 +1,6 @@
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
+  <div class="modal-dialog modal-transform-up modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content glass-container">
       <div class="modal-header">
         <h5 class="modal-title" id="loginModalLabel">Welcome Back</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -9,13 +9,13 @@
         <form id="loginForm" action="/user/login" method="POST">
           <div class="mb-3">
             <label for="loginEmail" class="form-label">Email</label>
-            <input type="email" name="email" class="form-control" id="loginEmail" required>
+            <input type="email" name="email" class="form-control" id="loginEmail" placeholder="Enter your email" required>
           </div>
           <div class="mb-3">
             <label for="loginPassword" class="form-label">Password</label>
-            <input type="password" name="pass" class="form-control" id="loginPassword" required>
+            <input type="password" name="pass" class="form-control" id="loginPassword" placeholder="Enter your password" required>
           </div>
-          <button type="submit" class="btn btn-primary w-100">Login</button>
+          <button type="submit" class="btn btn-primary w-100 mt-3">Login</button>
         </form>
       </div>
     </div>

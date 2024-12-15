@@ -58,7 +58,11 @@
               <img src="<%= locals.user.profileImage || '/images/default-avatar.png' %>" alt="Profile" class="avatar-circle">
             </button>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/change-pass">Update Password</a></li>
+              <li>
+                <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                  Update Password
+                </button>
+              </li>              
               <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
               <li><a class="dropdown-item" href="/user/delete">Delete Account</a></li>
             </ul>

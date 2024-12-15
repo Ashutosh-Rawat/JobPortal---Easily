@@ -1,6 +1,6 @@
 <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
+  <div class="modal-dialog modal-transform-up modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content glass-container">
       <div class="modal-header">
         <h5 class="modal-title" id="registerModalLabel">Sign Up</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -9,17 +9,17 @@
         <form id="registerForm" action="/user/register" method="POST">
           <div class="mb-3">
             <label for="name" class="form-label">Name</label>
-            <input type="text" name="name" class="form-control" id="name" required>
+            <input type="text" name="name" class="form-control" id="name" placeholder="Enter your full name" required>
           </div>
           <div class="mb-3">
             <label for="registerEmail" class="form-label">Email address</label>
-            <input type="email" name="email" class="form-control" id="registerEmail" required>
+            <input type="email" name="email" class="form-control" id="registerEmail" placeholder="Enter your email" required>
           </div>
           <div class="mb-3">
             <label for="registerPassword" class="form-label">Password</label>
-            <input type="password" name="pass" class="form-control" id="registerPassword" required>
+            <input type="password" name="pass" class="form-control" id="registerPassword" placeholder="Create a strong password" required>
           </div>
-          <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+          <button type="submit" class="btn btn-primary w-100 mt-3">Sign Up</button>
         </form>
       </div>
     </div>
