@@ -23,7 +23,8 @@ export default class JobController {
             }
 
             res.status(200).render('job-listing', { 
-                data: jobs, includeHeader: true, user: req.session.user
+                data: jobs, includeHeader: true, 
+                user: req.session.user, posted: false
             })
         } catch (error) {
             next(error)
@@ -32,11 +33,14 @@ export default class JobController {
 
     async getPostedJobs(req,res,next) {
         try {
-            const jobs = await this.jobRepo.postedJobs(req.session.user.id)
+            const jobs = req.session.user ? 
+                await this.jobRepo.postedJobs(req.session.user.id) : null
             res.status(200).render('job-listing', { 
-                data: jobs, includeHeader: true, user: req.session.user
+                data: jobs, includeHeader: true, 
+                user: req.session.user, posted: true
             })
         } catch (error) {
+            console.log(error)
             next(error)
         }
     }

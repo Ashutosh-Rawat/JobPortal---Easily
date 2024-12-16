@@ -1,9 +1,15 @@
 <div class="container-fluid mt-3">
-  <% if (data.length === 0) { %>
+  <% if (!data || data.length === 0) { %>
     <div class="d-flex w-100 justify-content-center align-items-center" style="height: 80vh;">
       <div class="glass-container text-center">
         <img src="https://cdn.pixabay.com/photo/2016/05/14/18/23/emoticon-1392275_1280.png" alt="Sad Smiley Face" style="width: 115px; height: 115px;">
-        <p class="text-muted" style="font-size: 2rem;">Sorry, no jobs available right now.</p>
+        <p class="text-muted" style="font-size: 2rem;">
+          <% if(!posted) { %>
+            Sorry, no jobs available right now.
+          <% } else { %>
+            You haven't posted any job.
+          <% } %>
+        </p>
         <% if (user) { %>
           <button class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#addJobModal">Post A Job</button>
         <% } %>
