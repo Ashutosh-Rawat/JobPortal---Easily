@@ -6,10 +6,10 @@ class CategoryRepsitory {
     }
 
     async jobsByCategory(category) {
-        return await CategoryModel.find({jobCategory: category}, {jobNames})
+        return await CategoryModel.find({jobCategory: category}, {jobNames:1})
     }
     async skillsByCategory(category) {
-        return await CategoryModel.find({jobCategory: category}, {skillsNeeded})
+        return await CategoryModel.find({jobCategory: category}, {skillsNeeded:1})
     }
 }
 

@@ -9,6 +9,7 @@ import dotenv from 'dotenv'
 import userRouter from './src/routes/user.routes.js'
 import jobRouter from './src/routes/job.routes.js'
 import applicantRouter from './src/routes/applicant.routes.js'
+import categoryRouter from './src/routes/category.routes.js'
 // functional middlewares
 import applicationErrorHandler, {ApplicationError} from './src/middlewares/ApplicationError.middleware.js'
 // functional controllers
@@ -49,6 +50,7 @@ app.get('/err', getError)
 app.use('/user', userRouter)
 app.use('/jobs', jobRouter)
 app.use('/applicant', applicantRouter)
+app.use('/categories', categoryRouter)
 // ignore favicon request
 app.get('/favicon.ico', (req, res) => res.status(204))
 // Error handler middleware

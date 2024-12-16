@@ -114,30 +114,15 @@ export default class JobController {
         }
     }
 
-    async getJobCategories(req, res, next) {
+    async displayCategories(req,res,next) {
         try {
             const categories = await this.categoryRepo.categoryList()
-            res.json(categories)
-        } catch (error) {
-            next(error)
-        }
-    }
-
-    async getJobNames(req, res, next) {
-        try {
-            const jobNames = await this.categoryRepo.jobsByCategory(req.params.id)
-            res.json(jobNames)
-        } catch (error) {
-            next(error)
-        }
-    }
-
-    async getSkills(req, res, next) {
-        try {
-            const skills = await this.categoryRepo.skillsByCategory(req.params.id)
-            res.json(skills)
-        } catch (error) {
-            next(error)
+            res.status(200).render('category-listing', {
+                data: categories, includeHeader: true
+            })
+        } catch(err) {
+            console.log(err)
+            next(err)
         }
     }
 }

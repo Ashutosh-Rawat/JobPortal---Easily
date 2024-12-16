@@ -31,15 +31,7 @@ jobRouter.get('/postedJobs', jwtAuth,
 
 jobRouter.get('/categories', 
     (req, res, next) => 
-        jobController.getJobCategories(req, res, next)
-)
-jobRouter.get('/categories/:category/jobNames',
-    (req,res,next) =>
-        jobController.getJobNames(req,res,next)
-)
-jobRouter.get('/categories/:category/skills',
-    (req,res,next) => 
-        jobController.getSkills(req,res,next)
+        jobController.displayCategories(req, res, next)
 )
 
 // Path to view job details
