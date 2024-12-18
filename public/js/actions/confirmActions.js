@@ -1,5 +1,5 @@
 // Delete user function confirmation
-export async function getDeleteUser() {
+async function getDeleteUser() {
     const res = confirm('Are you sure, this will delete all your posted jobs and data?')
     if (res) {
       const request = await fetch(
@@ -11,7 +11,7 @@ export async function getDeleteUser() {
   }
   
 // Delete job function confirmation
-export async function getDeleteJobAuth(jobid) {
+async function getDeleteJobAuth(jobid) {
     const res = confirm('Are you sure you want to delete this job application?')
     if (res) {
         const request = await fetch(
@@ -23,7 +23,7 @@ export async function getDeleteJobAuth(jobid) {
 }
 
 // Update job function confirmation
-export async function getUpdateJobAuth() {
+async function getUpdateJobAuth() {
   const res = confirm('Are you sure you want to update this job application?')
   if (res) document.getElementById('updateJobForm').submit()
 }

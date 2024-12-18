@@ -29,7 +29,11 @@ class JobRepository {
 
     async findJobById(jobId) {
         try {
-            return await JobModel.findById(jobId).populate('applicants')
+            const jobObj = await JobModel.findById(jobId).populate('applicants')
+            const job = jobObj.toObject()
+            job._id = job._id.toString()
+            job.recruiter = job.recruiter.toString()
+            return job
         } catch (error) {
             console.error(`Error finding job with ID ${jobId}:`, error)
         }
@@ -37,10 +41,10 @@ class JobRepository {
 
     async createJob(jobDetails) {
         try {
+            jobDetails.recruiter = new Types.ObjectId(jobDetails.recruiter)         
             const job = new JobModel(jobDetails)
             await job.save()
-            console.log('Job created:', job)
-
+            console.log('Job created:', JSON.stringify(job))
             return job
         } catch (error) {
             console.error('Error creating job:', error)
@@ -49,6 +53,8 @@ class JobRepository {
 
     async updateJob(jobId, updates) {
         try {
+            console.log(jobId)
+            console.log(updates)
             const updatedJob = await JobModel.findByIdAndUpdate(jobId, updates, { new: true })
             console.log(`Job updated: ${jobId}`)
             return updatedJob

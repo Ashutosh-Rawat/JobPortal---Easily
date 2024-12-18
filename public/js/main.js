@@ -1,5 +1,5 @@
 // Import functions from separate files
-import { getDeleteUser, getDeleteJobAuth, getUpdateJobAuth } from './actions/confirmActions.js'
+// import { getDeleteUser, getDeleteJobAuth, getUpdateJobAuth } from './actions/confirmActions.js'
 import { toggleSearchBar, searchJobs } from './actions/searchActions.js'
 import { manageCategoryActions } from './actions/categoryActions.js'
 

@@ -1,3 +1,4 @@
+/* Navbar */
 .navbar {
     background-color: #00796b;
     box-shadow: var(--shadow-light);
@@ -23,11 +24,13 @@
     color: var(--primary-color);
 }
 
+/* Dropdown Menu */
 .dropdown-menu {
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-dark);
 }
 
+/* Avatar Styling */
 .avatar-circle {
     width: 40px;
     height: 40px;
@@ -35,7 +38,7 @@
     object-fit: cover;
 }
 
-/* Search Bar Styling */
+/* Search Bar */
 .search-bar {
     display: flex;
     align-items: center;
@@ -54,7 +57,6 @@
     padding: 0.35rem 0.8rem;
     font-size: 1rem;
 }
-  
 
 /* Icon Styling */
 .bi {
@@ -89,7 +91,7 @@
 .form-label {
     font-weight: bold;
 }
-  
+
 .form-select, .form-control {
     border-radius: 8px;
     border: 1px solid #ddd;
@@ -108,7 +110,86 @@
     margin-right: 10px;
 }
 
-.btn-primary, .btn-success, .btn-warning {
-    border-radius: 20px;
+/* Job Card */
+.job-card {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), var(--bg-color));
+    border: none;
+    border-radius: 12px;
+    padding: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
 }
-  
+
+/* .job-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+} */
+
+/* Custom Shadow */
+.custom-shadow {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Job Details Card */
+.job-detail-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Skills Styling */
+.custom-skill-pill {
+    background-color: #ff6b6b;
+    color: #ffffff;
+    font-size: 1rem;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin: 5px;
+    display: inline-block;
+}
+.custom-skill-pill:hover {
+    /* transform: translateY(-2px); */
+    transform: scale(1.04);
+    cursor: pointer;
+}
+
+/* Buttons */
+.btn-outline-secondary, .btn-outline-success, .btn-outline-primary, .btn-outline-danger {
+    font-weight: bold;
+    padding: 8px 20px;
+}
+
+/* Job Listing Card Body */
+.job-listing-card-body {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.7), var(--bg-color));
+    color: var(--text-color);
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-light);
+}
+
+.job-listing-card-body .icon {
+    font-size: 1.5rem;
+    margin-right: 10px;
+    color: var(--primary-color);
+}
+
+.job-listing-card-body .location {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+
+.job-listing-card-body .salary {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #6c63ff;
+    margin-left: 5px;
+}
+
+.job-listing-card-body .date {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ff6b6b;
+    margin-left: 5px;
+}

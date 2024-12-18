@@ -64,16 +64,6 @@ export default class UserController {
         }
     }
 
-    getChangePassword(req, res, next) {
-        try {
-            res.locals.user = req.user
-            res.status(200).render('change-pass', { includeHeader: true, err: false })
-        } catch (error) {
-            console.log(error)
-            next(error)
-        }
-    }
-
     async postChangePassword(req, res, next) {
         const { currentPassword, newPassword } = req.body
         try {
@@ -82,7 +72,7 @@ export default class UserController {
                 throw new Error('Incorrect current password')
             }
             const hashedPassword = await hashPassword(newPassword)
-            await this.userRepo.updateUserPassword(req.user.email, hashedPassword)
+            await this.userRepo.updateUserPassword(req.session.user.email, hashedPassword)
             res.redirect('/')
         } catch (error) {
             console.log(error)
@@ -90,7 +80,7 @@ export default class UserController {
         }
     }
 
-    async postDeleteUser(req, res, next) {
+    async getDeleteUser(req, res, next) {
         try {
             const user = await this.userRepo.deleteUser(req.session.user.id)
             if (user) {
@@ -101,7 +91,7 @@ export default class UserController {
                 console.log(`User and their posted jobs deleted: ${user.email}`)
                 res.locals.jobsPosted = user.postedJobs
                 res.locals.proceed = true
-                next()
+                res.redirect('/')
             } else {
                 throw new Error('User not found')
             }

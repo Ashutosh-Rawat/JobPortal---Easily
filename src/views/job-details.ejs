@@ -1,39 +1,49 @@
 <div class="container mt-5">
-  <div class="card job-detail-card">
-    <div class="card-body">
-      <h3 class="card-title text-center"><%= data.jobDesign %></h3>
-      <h5 class="card-subtitle mb-2 text-muted text-center"><%= data.companyName %></h5>
-      <div class="row">
-        <div class="col-md-12">
-          <p class="card-text">
-            <span class="detail-label"><i class="fas fa-map-marker-alt"></i> Location:</span> <%= data.jobLocation %><br>
-            <span class="detail-label">Category:</span> <%= data.jobCategory %><br>
-            <span class="detail-label">Salary:</span> ₹<%= data.salary %> LPA<br>
-            <span class="detail-label">Apply By:</span> <%= data.applyBy %><br>
-            <span class="detail-label">Posted On:</span> <%= data.jobPosted %><br>
-            <span class="detail-label">Number of openings:</span> <%= data.numberOfOpenings %><br>
-            <span class="detail-label">Number of applicants:</span> <%= data.applicants.length %><br>
-          </p>
-          <span class="detail-label">Skill Required:</span>
-          <div class="skills-container">
-            <% data.skillsRequired.forEach(function(skill) { %>
-              <span class="skill-pill"><%= skill %></span>
-            <% }); %>
-          </div>
-        </div>
+  <div class="job-detail-card p-4 shadow glass-tile-gradient-2">
+    <h3 class="text-center text-primary mb-3 cl-indigo fsl"><%= job.designation %></h3>
+    <h5 class="text-center text-muted mb-4 c-orange" <%= job.company %></h5>
+
+    <div class="row justify-content-flex-start text-start">
+      <div class="col-md-6 mb-3">
+        <p><strong>Location:</strong> <i class="fas fa-map-marker-alt text-danger fss"></i> <%= job.location %></p>
       </div>
-      <div class="btns d-flex gap-2 mt-5">
-        <% if(!locals.user) { %>
-          <a href="/jobs/<%= data.jobId %>/apply" class="btn btn-outline-secondary">Apply Now</a>
-        <% } else { %>
-          <% if(data.applicants && data.applicants.length) { %>
-            <a href="/jobs/<%= data.jobId %>/applicants" class="btn btn-outline-success mr-2">See Applicants</a>
-          <% } %>
-        <%  } if(locals.eligibleRecruiter) { %>
-          <a href="/jobs/<%= data.jobId %>/update" class="btn btn-outline-primary mr-2">Update Job Details</a>
-          <button type="button" onclick="getDeleteJobAuth('<%= data.jobId %>')" class="btn btn-outline-danger mr-2">Delete Job</button>
+      <div class="col-md-6 mb-3">
+        <p> <strong>Salary:</strong> <i class="fas fa-indian-rupee-sign text-success fss"></i> <%= job.salary %> LPA</p>
+      </div>
+      <div class="col-md-6 mb-3">
+        <p> <strong>Apply By:</strong> <i class="fas fa-calendar-alt text-warning fss"></i> <%= formatDate(job.applyBy) %></p>
+      </div>
+      <div class="col-md-6 mb-3">
+        <p> <strong>Openings:</strong> <i class="fas fa-users text-info fss"></i> <%= job.openings %></p>
+      </div>
+      <div class="col-md-6 mb-3">
+        <p> <strong>Applicants:</strong> <i class="fas fa-user-check text-primary fss"></i> <%= job.applicants.length %></p>
+      </div>
+      <div class="col-md-6 mb-3">
+        <p> <strong>Posted On:</strong> <i class="fas fa-calendar text-secondary fss"></i> <%= formatDate(job.postedDate) %></p>
+      </div>
+    </div>
+
+    <div class="skills-container mb-4 text-start">
+      <h5 class="text-primary mb-2 cl-indigo fsm">Skills Required</h5>
+      <% job.skills.forEach(skill => { %>
+        <span class="badge custom-skill-pill bg-indigo"><%= skill %></span>
+      <% }) %>
+    </div>
+
+    <div class="d-flex gap-2 mt-4">
+      <% if(!locals.user) { %>
+        <a href="/jobs/<%= job._id %>/apply" class="btn btn-outline-secondary" style="border-radius: 20px; background-color: #28a745; color: white; border: none;">Apply Now</a>
+      <% } else { %>
+        <% if(job.applicants && job.applicants.length) { %>
+          <a href="/jobs/<%= job._id %>/applicants" class="btn btn-outline-success" style="border-radius: 20px; background-color: #28a745; color: white; border: none;">See Applications</a>
         <% } %>
-      </div>
+      <% } %>
+      <% if(user && job.recruiter===user.id) { %>
+        
+        <a href="/jobs/<%= job._id %>/update" class="btn btn-outline-primary" style="border-radius: 20px; background-color: #6c63ff; color: white; border: none;">Update Job Details</a>
+        <button type="button" onclick="getDeleteJobAuth('<%= job._id %>')" class="btn btn-outline-danger" style="border-radius: 20px; background-color: #ff5733; color: white; border: none;">Delete Job</button>
+      <% } %>
     </div>
   </div>
 </div>

@@ -44,7 +44,7 @@ export function manageCategoryActions() {
           const div = document.createElement('div')
           div.classList.add('form-check', 'me-3')
           div.innerHTML = `
-            <input class="form-check-input" type="checkbox" name="skills[]" value="${skill}" id="skill-${skill}">
+            <input class="form-check-input" type="checkbox" name="skills" value="${skill}" id="skill-${skill}">
             <label class="form-check-label" for="skill-${skill}">${skill}</label>
           `
           skillsContainer.appendChild(div)

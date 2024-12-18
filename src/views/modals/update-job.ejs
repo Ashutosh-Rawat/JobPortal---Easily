@@ -14,7 +14,7 @@
           <div class="row mb-4">
             <div class="col-md-6">
               <label for="jobCategory" class="form-label">Job Category</label>
-              <select id="jobCategory" class="form-select" required>
+              <select id="jobCategory" name="category" class="form-select" required>
                 <!-- Populated dynamically -->
               </select>
             </div>
@@ -35,12 +35,12 @@
           <!-- Other Fields -->
           <div class="row mb-4">
             <div class="col-md-6">
-              <label for="location" class="form-label">Job Location</label>
-              <input type="text" id="location" name="location" class="form-control" required>
+              <label for="jobLocation" class="form-label">Job Location</label>
+              <input type="text" id="jobLocation" name="location" class="form-control" required>
             </div>
             <div class="col-md-6">
-              <label for="companyName" class="form-label">Company Name</label>
-              <input type="text" id="companyName" name="companyName" class="form-control" required>
+              <label for="company" class="form-label">Company Name</label>
+              <input type="text" id="company" name="companyName" class="form-control" required>
             </div>
           </div>
           <div class="row mb-4">
@@ -49,14 +49,14 @@
               <input type="number" id="salary" name="salary" class="form-control" required>
             </div>
             <div class="col-md-6">
-              <label for="applyBy" class="form-label">Apply By Date</label>
-              <input type="date" id="applyBy" name="applyBy" class="form-control" required>
+              <label for="applyDate" class="form-label">Apply By Date</label>
+              <input type="date" id="applyDate" name="applyBy" class="form-control" required>
             </div>
           </div>
           <div class="row mb-4">
             <div class="col-md-6">
-              <label for="openings" class="form-label">Number of Openings</label>
-              <input type="number" id="openings" name="openings" class="form-control" min="1" required>
+              <label for="jobOpenings" class="form-label">Number of Openings</label>
+              <input type="number" id="jobOpenings" name="openings" class="form-control" min="1" required>
             </div>
           </div>
           <!-- Submit Button -->

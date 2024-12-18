@@ -13,6 +13,7 @@
     --shadow-dark: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
+/* Body and Links */
 body {
     font-family: var(--font-normal);
     background-color: var(--bg-color);
@@ -28,6 +29,7 @@ a:hover {
     color: var(--accent-color);
 }
 
+/* Button Styles */
 .btn {
     padding: 0.75rem 1.5rem;
     border-radius: var(--border-radius);
@@ -96,22 +98,51 @@ a:hover {
 
 /* Glassy Gradients */
 .glass-tile-gradient-1 {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(0, 123, 255, 0.5));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(0, 123, 255, 0.5)) !important;
     backdrop-filter: blur(8px);
 }
 
 .glass-tile-gradient-2 {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(40, 167, 69, 0.5));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(40, 167, 69, 0.5)) !important;
     backdrop-filter: blur(8px);
 }
 
 .glass-tile-gradient-3 {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 87, 51, 0.5));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 87, 51, 0.5)) !important;
     backdrop-filter: blur(8px);
 }
 
-
 .modal-transform-up {
-    /* margin-top: calc(50vh - 2rem); */
     transform: translateY(-10%) !important;
+}
+
+
+/* font awesome icons */
+.fss {
+    font-size: 1.5rem;
+}
+.fsm {
+    font-size: 1.8rem;
+}
+.fsl {
+    font-size: 2.5rem;
+}
+.fsxl {
+    font-size: 3rem;
+}
+.c-orange {
+    color: #ff5733;
+}
+.cl-orange {
+    color: #ff5733;
+}
+.c-yellow {
+    color: #ffc107;
+}
+.cl-indigo {
+    color: #6c63ff;
+}
+
+.bg-indigo {
+    background-color: #6c63ff !important;
 }

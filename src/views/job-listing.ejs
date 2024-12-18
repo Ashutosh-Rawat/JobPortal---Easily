@@ -19,21 +19,25 @@
     <div class="row justify-content-center">
       <% data.forEach(job => { %>
         <div class="col-md-6 col-lg-4 mb-4">
-          <div class="glass-tile-gradient-1 job-tile shadow h-100">
+          <div class="job-card custom-shadow glass-tile-gradient-1">
             <div class="card-body">
-              <h5 class="card-title text-primary"><%= job.companyName %></h5>
-              <h6 class="card-subtitle mb-2 text-muted"><%= job.jobDesign %></h6>
-              <p class="card-text">
-                <strong>Location:</strong> <%= job.jobLocation %><br>
-                <strong>Package:</strong> ₹<%= job.salary %> LPA<br>
-                <strong>Skills:</strong>
-                <span class="d-block">
-                  <% job.skillsRequired.forEach(skill => { %>
-                    <span class="badge bg-secondary me-1"><%= skill %></span>
-                  <% }) %>
-                </span>
-              </p>
-              <a href="/jobs/<%= job.jobId %>" class="btn btn-primary w-100">View Details</a>
+              <h5 class="card-title text-primary mb-3 fsl cl-indigo"><%= job.company %></h5>
+              <h6 class="card-subtitle mb-3 text-muted text-center fsm c-orange"><%= job.designation %></h6>
+              <div class="job-details mb-3 ms-4">
+                <p>
+                  <i class="fas fa-map-marker-alt fsm cl-orange"></i> <%= job.location %> 
+                </p>
+                  <p>
+                    <i class="fas fa-indian-rupee-sign text-success fsm"></i> <%= job.salary %> LPA
+                  </p>
+                <p><i class="fas fa-calendar-alt fsm c-yellow"></i> Apply By: <%= formatDate(job.applyBy) %></p>
+              </div>
+              <div class="skills-container mb-3 d-flex justify-content-center flex-wrap">
+                <% job.skills.forEach(skill => { %>
+                  <span class="badge custom-skill-pill bg-indigo"><%= skill %></span>
+                <% }) %>
+              </div>
+              <a href="/jobs/<%= job._id %>" class="btn btn-primary custom-btn w-100" style="background: linear-gradient(to right, #007bff, #6c63ff); border: none; color: white; box-shadow: var(--shadow-dark);">View Details</a>
             </div>
           </div>
         </div>
