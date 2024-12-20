@@ -16,7 +16,6 @@ export default class JobController {
         try {
             const { search } = req.query
             let jobs
-
             if (search) {
                 jobs = await this.jobRepo.searchJobs(search)
             } else {
@@ -38,7 +37,8 @@ export default class JobController {
                 await this.jobRepo.postedJobs(req.session.user.id) : null
             res.status(200).render('job-listing', { 
                 data: jobs, includeHeader: true, 
-                user: req.session.user, posted: true
+                user: req.session.user, posted: true,
+                formatDate
             })
         } catch (error) {
             console.log(error)
@@ -51,10 +51,10 @@ export default class JobController {
             if(req.params.id) {
                 const job = await this.jobRepo.findJobById(req.params.id)
                 if (!job) throw new Error('Job not found')
-    
                 res.status(200).render('job-details', { 
-                    job, formatDate, includeHeader: true,
-                    user: req.session.user
+                    job, includeHeader: true,
+                    user: req.session.user, posted: false,
+                    formatDate
                 })
             }
         } catch (error) {

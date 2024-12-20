@@ -1,3 +1,6 @@
+<% if(user && job.recruiter===user.id) { %>
+  <%- include('modals/update-job', {job}) %>
+<% } %>
 <div class="container mt-5">
   <div class="job-detail-card p-4 shadow glass-tile-gradient-2">
     <h3 class="text-center text-primary mb-3 cl-indigo fsl"><%= job.designation %></h3>
@@ -40,9 +43,8 @@
         <% } %>
       <% } %>
       <% if(user && job.recruiter===user.id) { %>
-        
-        <a href="/jobs/<%= job._id %>/update" class="btn btn-outline-primary" style="border-radius: 20px; background-color: #6c63ff; color: white; border: none;">Update Job Details</a>
-        <button type="button" onclick="getDeleteJobAuth('<%= job._id %>')" class="btn btn-outline-danger" style="border-radius: 20px; background-color: #ff5733; color: white; border: none;">Delete Job</button>
+        <button class="btn btn-secondary btn-lg bg-indigo border-r" data-bs-toggle="modal" data-bs-target="#updateJobModal">Post Jobs</button>
+        <button type="button" onclick="getDeleteJobAuth('<%= job._id %>')" class="btn btn-outline-danger border-r" style="border-radius: 20px; background-color: #ff5733; color: white; border: none;">Delete Job</button>
       <% } %>
     </div>
   </div>

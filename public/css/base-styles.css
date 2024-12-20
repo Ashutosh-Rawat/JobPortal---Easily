@@ -146,3 +146,7 @@ a:hover {
 .bg-indigo {
     background-color: #6c63ff !important;
 }
+
+.border-r {
+    border-radius: 20px;
+}
