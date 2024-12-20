@@ -43,7 +43,7 @@
         <% } %>
       <% } %>
       <% if(user && job.recruiter===user.id) { %>
-        <button class="btn btn-secondary btn-lg bg-indigo border-r" data-bs-toggle="modal" data-bs-target="#updateJobModal">Post Jobs</button>
+        <button class="btn btn-secondary btn-lg bg-indigo border-r" data-bs-toggle="modal" data-bs-target="#updateJobModal">Update Jobs</button>
         <button type="button" onclick="getDeleteJobAuth('<%= job._id %>')" class="btn btn-outline-danger border-r" style="border-radius: 20px; background-color: #ff5733; color: white; border: none;">Delete Job</button>
       <% } %>
     </div>

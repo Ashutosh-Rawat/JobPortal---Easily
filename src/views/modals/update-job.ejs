@@ -9,12 +9,12 @@
       </div>
       <!-- Modal Body -->
       <div class="modal-body">
-        <form id="updateJobForm" method="POST" action="/jobs/update">
+        <form id="updateJobForm" method="POST" action="/jobs/<%= job._id %>/update">
           <!-- Category and Designation -->
           <div class="row mb-4">
             <div class="col-md-6">
               <label for="updateJobCategory" class="form-label">Job Category</label>
-              <select id="updateJobCategory" class="form-select" required>
+              <select id="updateJobCategory" name="category" class="form-select" required>
                 <!-- Populated dynamically -->
               </select>
             </div>
