@@ -1,6 +1,6 @@
 import jobCategories from '../jobCategories.js'
 
-export function manageCategoryActions() {
+export async function manageCategoryActions() {
   const addJobCategory = document.querySelector('#addJobCategory')
   const addJobDesignation = document.querySelector('#addJobDesignation')
   const addSkillsContainer = document.querySelector('#addSkillsContainer')
@@ -23,6 +23,9 @@ export function manageCategoryActions() {
   ]
 
   mapFields.forEach(({ jobCategorySelect, jobDesignationSelect, skillsContainer }) => {
+    // Skip if jobCategorySelect is null
+    if (!jobCategorySelect || !jobDesignationSelect || !skillsContainer) return
+
     // Populate job category dropdown
     jobCategorySelect.innerHTML = '<option value="">Select a Category</option>'
     jobCategories.forEach(category => {

@@ -17,5 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Manage job categories and skills
-  manageCategoryActions()
+  const addJobModel = document.getElementById('addJobModal')
+  if (addJobModel) {
+    addJobModel.addEventListener('show.bs.modal', 
+      manageCategoryActions()
+    )
+  }
 })
