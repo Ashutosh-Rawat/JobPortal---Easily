@@ -1,7 +1,7 @@
 import JobModel from '../models/job.model.js'
 import { Types } from 'mongoose'
 
-class JobRepository {
+export default class JobRepository {
     async listJobs() {
         try {
             return await JobModel.find()
@@ -43,9 +43,9 @@ class JobRepository {
         try {
             jobDetails.recruiter = new Types.ObjectId(jobDetails.recruiter)         
             const job = new JobModel(jobDetails)
-            await job.save()
+            const newJob = await job.save()
             console.log('Job created:', JSON.stringify(job))
-            return job
+            return newJob
         } catch (error) {
             console.error('Error creating job:', error)
         }
@@ -101,5 +101,3 @@ class JobRepository {
         }
     }
 }
-
-export default new JobRepository()

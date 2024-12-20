@@ -1,6 +1,6 @@
 import CategoryModel from "../models/category.model.js"
 
-class CategoryRepsitory {
+export default class CategoryRepsitory {
     async categoryList() {
         return await CategoryModel.find()
     }
@@ -12,5 +12,3 @@ class CategoryRepsitory {
         return await CategoryModel.find({jobCategory: category}, {skillsNeeded:1})
     }
 }
-
-export default new CategoryRepsitory()

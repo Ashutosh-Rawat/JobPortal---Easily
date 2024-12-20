@@ -6,10 +6,10 @@ import formatDate from '../../public/js/actions/formatDateActions.js'
 
 export default class JobController {
     constructor() {
-        this.userRepo = UserRepository
-        this.jobRepo = JobRepository
-        this.applicantRepo = ApplicantRepository
-        this.categoryRepo = CategoryRepository
+        this.userRepo = new UserRepository()
+        this.jobRepo = new JobRepository()
+        this.applicantRepo = new ApplicantRepository()
+        this.categoryRepo = new CategoryRepository()
     }
 
     async listJobs(req, res, next) {
@@ -65,6 +65,7 @@ export default class JobController {
     async createJob(req, res, next) {
         try {
             console.log(req.body)
+            console.log(req.session.user)
             const jobDetails = {
                 category: req.body.category,
                 designation: req.body.designation,
@@ -77,7 +78,6 @@ export default class JobController {
                 recruiter: req.session.user.id
             }
             const newJob = await this.jobRepo.createJob(jobDetails)
-            console.log(newJob)
             await this.userRepo.addJobToUser(req.session.user.id, newJob._id)
             res.status(302).redirect(`/jobs/${newJob._id}`)
         } catch (error) {

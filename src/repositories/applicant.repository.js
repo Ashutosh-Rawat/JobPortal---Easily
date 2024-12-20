@@ -1,6 +1,6 @@
 import ApplicantModel from '../models/applicant.model.js'
 
-class ApplicantRepository {
+export default class ApplicantRepository {
     async createApplicant(applicantData) {
         try {
             const applicant = new ApplicantModel(applicantData)
@@ -22,5 +22,3 @@ class ApplicantRepository {
         }
     }
 }
-
-export default ApplicantRepository

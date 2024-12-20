@@ -1,7 +1,7 @@
 import UserModel from '../models/user.model.js'
 import {Types} from 'mongoose'
 
-class UserRepository {
+export default class UserRepository {
     async addUser(userData) {
         try {
             const user = new UserModel(userData)
@@ -108,5 +108,3 @@ class UserRepository {
         }
     }
 }
-
-export default new UserRepository()

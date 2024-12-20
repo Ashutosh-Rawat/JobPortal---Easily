@@ -5,9 +5,9 @@ import { hashPassword, comparePassword, createToken, clearToken } from '../auth/
 
 export default class UserController {
     constructor() {
-        this.userRepo = UserRepository
-        this.jobRepo = JobRepository
-        this.applicantRepo = ApplicantRepository
+        this.userRepo = new UserRepository()
+        this.jobRepo = new JobRepository()
+        this.applicantRepo = new ApplicantRepository()
     }
 
     async postRegister(req, res, next) {

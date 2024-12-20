@@ -2,7 +2,7 @@ import CategoryRepository from "../repositories/category.repository.js"
 
 export default class CategoryController {
     constructor() {
-        this.categoryRepo = CategoryRepository
+        this.categoryRepo = new CategoryRepository()
     }
 
     async getCategories(req,res,next) {
