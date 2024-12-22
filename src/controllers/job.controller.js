@@ -88,9 +88,19 @@ export default class JobController {
 
     async deleteJob(req, res, next) {
         try {
-            const deletedJob = await this.jobRepo.deleteJob(req.params.id)
+            const jobId = req.params.id
+            const job = await this.jobRepo.findJobById(jobId)
+            if (!job) throw new Error('Job not found')
+            const applicants = await this.applicantRepo.getApplicantsForJob(jobId)
+            await Promise.all(applicants.map(async (applicant) => {
+                await this.applicantRepo.deleteApplicant(applicant._id)
+            }))
+            const deletedJob = await this.jobRepo.deleteJob(jobId)
             await this.userRepo.removeJobFromUser(req.session.user.id, deletedJob._id)
+            const filesToDelete = applicants.map(applicant => applicant.resumePath)
+            req.filesToDelete = filesToDelete
             res.status(302).redirect('/jobs')
+            next()
         } catch (error) {
             next(error)
         }

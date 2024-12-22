@@ -46,7 +46,8 @@ jobRouter.post('/:id/update', jwtAuth,
 jobRouter.post('/:id/delete', jwtAuth,
     (req, res, next) => {
         jobController.deleteJob(req, res, next)
-    }
+    },
+    deleteFileOnValidationError
 )
 
 jobRouter.post('/:id/apply', jwtAuth, 
