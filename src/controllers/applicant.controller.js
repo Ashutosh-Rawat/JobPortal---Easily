@@ -1,42 +1,40 @@
-import path from 'path'
-import ApplicantModel from '../models/applicant.model.js'
+import ApplicantRepository from '../repositories/applicant.repository.js'
+import JobRepository from '../repositories/job.repository.js'
 
 export default class ApplicantController {
-    getJobApplication(req,res) {
-        res.render('job-application', {
-            includeHeader: true,
-            user: req.session.user,
-            errors: null
-        })
+    constructor() {
+        this.applicantRepo = new ApplicantRepository()
     }
-    
-    async postJobApplication(req,res,next) {
+
+    // Add new applicant
+    async addApplicant(req, res, next) {
         try {
-            const {name,email,contact} = req.body
-            const resumePath = path.join('savedResumes',req.file.filename)
-            const applicationObject = await ApplicantModel.addApplicant({name,email,contact,resumePath})
-            res.locals.application = applicationObject
-            res.locals.currentJobId = req.params.id            
-            next()
-        }
-        catch(err) {
-            console.log(err)
-            req.session.err = 'error occured while submitting your job application'
-            res.redirect(302, '/jobs')
+            const { name, email, contact, resumeLink } = req.body
+            let resumePath = resumeLink
+
+            if (req.file) {
+                resumePath = req.file.path // Use the uploaded file path
+            }
+
+            const applicantDetails = { name, email, contact, resumePath }
+            const newApplicant = await this.applicantRepo.createApplicant(applicantDetails)
+
+            // Pass applicant id to job application process
+            req.applicantId = newApplicant._id
+            next() // Move to the next step to apply to the job
+        } catch (error) {
+            next(error)
         }
     }
 
-    async postDeleteApplicants(req,res,next) {
+    // Remove applicant from the system
+    async removeApplicant(req, res, next) {
         try {
-            const applicantIds = res.locals.applicantList
-            if(applicantIds && applicantIds.length)
-                await ApplicantModel.deleteApplicants(applicantIds)
-            res.redirect(302, '/jobs')
-        }
-        catch(err) {
-            console.log(err)
-            req.session.err = 'error occured while deleting applicants'
-            res.redirect(302, '/err')
+            const { applicantId } = req.params
+            await this.applicantRepo.deleteApplicant(applicantId)
+            res.status(200).redirect('/')
+        } catch (error) {
+            next(error)
         }
     }
 }

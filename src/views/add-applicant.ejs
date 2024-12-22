@@ -1,0 +1,49 @@
+<!-- Applicant Add Modal -->
+<div class="modal fade" id="addApplicantModal" tabindex="-1" aria-labelledby="addApplicantModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="addApplicantModalLabel">Job Applicant for <%= job.designation %></h5>
+        <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <form id="addApplicantForm" method="POST" action="/applicants/add">
+          <!-- Applicant Details -->
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <label for="applicantName" class="form-label">Applicant Name</label>
+              <input type="text" id="applicantName" name="name" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <label for="applicantEmail" class="form-label">Email Address</label>
+              <input type="email" id="applicantEmail" name="email" class="form-control" required>
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <label for="applicantPhone" class="form-label">Phone Number</label>
+              <input type="tel" id="applicantPhone" name="phone" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <label for="applicantResume" class="form-label">Resume (PDF)</label>
+              <input type="file" id="applicantResume" name="resume" class="form-control" accept=".pdf" required>
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <label for="applicantMessage" class="form-label">Cover Letter</label>
+              <textarea id="applicantMessage" name="message" class="form-control" rows="4" required></textarea>
+            </div>
+          </div>
+          <!-- Job Information (Hidden) -->
+          <input type="hidden" name="jobId" value="<%= job._id %>">
+          <input type="hidden" name="designation" value="<%= job.designation %>">
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-success w-100">Submit Application</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

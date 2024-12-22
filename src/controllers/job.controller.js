@@ -15,30 +15,28 @@ export default class JobController {
     async listJobs(req, res, next) {
         try {
             const { search } = req.query
-            let jobs
-            if (search) {
-                jobs = await this.jobRepo.searchJobs(search)
-            } else {
-                jobs = await this.jobRepo.listJobs()
-            }
+            const jobs = search ? 
+                await this.jobRepo.searchJobs(search) : 
+                await this.jobRepo.listJobs()
             res.status(200).render('job-listing', { 
                 data: jobs, includeHeader: true, 
                 user: req.session.user, posted: false,
-                formatDate
+                formatDate 
             })
         } catch (error) {
             next(error)
         }
     }
 
-    async getPostedJobs(req,res,next) {
+    async getPostedJobs(req, res, next) {
         try {
             const jobs = req.session.user ? 
-                await this.jobRepo.postedJobs(req.session.user.id) : null
+                await this.jobRepo.postedJobs(req.session.user.id) : 
+                null
             res.status(200).render('job-listing', { 
                 data: jobs, includeHeader: true, 
                 user: req.session.user, posted: true,
-                formatDate
+                formatDate 
             })
         } catch (error) {
             console.log(error)
@@ -48,15 +46,13 @@ export default class JobController {
 
     async getJobDetails(req, res, next) {
         try {
-            if(req.params.id) {
-                const job = await this.jobRepo.findJobById(req.params.id)
-                if (!job) throw new Error('Job not found')
-                res.status(200).render('job-details', { 
-                    job, includeHeader: true,
-                    user: req.session.user, posted: false,
-                    formatDate
-                })
-            }
+            const job = await this.jobRepo.findJobById(req.params.id)
+            if (!job) throw new Error('Job not found')
+            res.status(200).render('job-details', { 
+                job, includeHeader: true,
+                user: req.session.user, posted: false,
+                formatDate
+            })
         } catch (error) {
             next(error)
         }
@@ -64,17 +60,9 @@ export default class JobController {
 
     async createJob(req, res, next) {
         try {
-            console.log(req.body)
-            console.log(req.session.user)
+            const { category, designation, location, companyName, salary, applyBy, skills, openings } = req.body
             const jobDetails = {
-                category: req.body.category,
-                designation: req.body.designation,
-                location: req.body.location,
-                companyName: req.body.companyName,
-                salary: req.body.salary,
-                applyBy: req.body.applyBy,
-                skills: req.body.skills,
-                openings: req.body.openings,
+                category, designation, location, companyName, salary, applyBy, skills, openings,
                 recruiter: req.session.user.id
             }
             const newJob = await this.jobRepo.createJob(jobDetails)
@@ -88,20 +76,10 @@ export default class JobController {
 
     async updateJob(req, res, next) {
         try {
-            console.log(req.body)
-            const updatedDetails = {
-                category: req.body.category,
-                designation: req.body.designation,
-                location: req.body.location,
-                companyName: req.body.companyName,
-                salary: req.body.salary,
-                applyBy: req.body.applyBy,
-                skills: req.body.skills,
-                openings: req.body.openings
-            }
+            const { category, designation, location, companyName, salary, applyBy, skills, openings } = req.body
+            const updatedDetails = { category, designation, location, companyName, salary, applyBy, skills, openings }
             const updatedJob = await this.jobRepo.updateJob(req.params.id, updatedDetails)
             if (!updatedJob) throw new Error('Job not found')
-
             res.status(302).redirect(`/jobs/${updatedJob._id}`)
         } catch (error) {
             next(error)
@@ -118,31 +96,34 @@ export default class JobController {
         }
     }
 
-    async applyToJob(req, res, next) {
+    async addApplicantToJob(req, res, next) {
         try {
-            if (!req.body.name || !req.body.email || !req.body.resumePath) {
-                req.emit('validationFailed')
-                throw new Error('Validation failed: Missing required fields')
-            }
-            const applicantData = { ...req.body }
-            const newApplicant = await this.applicantRepo.createApplicant(applicantData)
-            if (!newApplicant) throw new Error('Failed to create applicant')
-            const updatedJob = await this.jobRepo.addApplicantToJob(req.params.id, newApplicant._id)
-            if (!updatedJob) throw new Error('Failed to link applicant to the job')
-
-            res.status(302).redirect('/jobs')
-        } catch (error) {
-            next(error)
+            const { jobId } = req.params
+            const applicantId = req.applicantId
+            await this.jobRepo.addApplicantToJob(jobId, applicantId)
+            res.status(302).redirect(`/jobs/${jobId}`)
+        } catch (err) {
+            next(err)
         }
     }
 
-    async displayCategories(req,res,next) {
+    async removeApplicantFromJob(req, res, next) {
+        try {
+            const { jobId, applicantId } = req.params
+            await this.jobRepo.removeApplicantFromJob(jobId, applicantId)
+            res.status(302).redirect(`/jobs/${jobId}`)
+        } catch (err) {
+            next(err)
+        }
+    }
+
+    async displayCategories(req, res, next) {
         try {
             const categories = await this.categoryRepo.categoryList()
             res.status(200).render('category-listing', {
                 data: categories, includeHeader: true
             })
-        } catch(err) {
+        } catch (err) {
             console.log(err)
             next(err)
         }

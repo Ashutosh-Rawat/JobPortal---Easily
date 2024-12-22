@@ -12,9 +12,9 @@ export default class JobRepository {
 
     async postedJobs(userId) {
         try {
-            return await JobModel.find({recruiter: new Types.ObjectId(userId)})
-        } catch(error) {
-            console.log('error finding posted jobs: ', error)
+            return await JobModel.find({ recruiter: new Types.ObjectId(userId) })
+        } catch (error) {
+            console.log('Error finding posted jobs:', error)
         }
     }
 
@@ -41,7 +41,7 @@ export default class JobRepository {
 
     async createJob(jobDetails) {
         try {
-            jobDetails.recruiter = new Types.ObjectId(jobDetails.recruiter)         
+            jobDetails.recruiter = new Types.ObjectId(jobDetails.recruiter)
             const job = new JobModel(jobDetails)
             const newJob = await job.save()
             console.log('Job created:', JSON.stringify(job))

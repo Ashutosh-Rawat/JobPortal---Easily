@@ -6,24 +6,21 @@ import sendMail from '../middlewares/sendMail.middleware.js'
 
 const jobRouter = Router()
 const jobController = new JobController()
+const applicantController = new ApplicantController()
 
-// Path to list all jobs
 jobRouter.get('/', 
     (req, res, next) => {
         jobController.listJobs(req, res, next)
     }
 )
 
-// Path to post a new job
 jobRouter.post('/add', jwtAuth, 
-    // validateJob,
     (req, res, next) => {
         jobController.createJob(req, res, next)
     }
 )
 
 jobRouter.get('/postedJobs', jwtAuth,
-    // get posted jobs by user
     (req,res,next) => {
         jobController.getPostedJobs(req,res,next)
     }
@@ -34,35 +31,34 @@ jobRouter.get('/categories',
         jobController.displayCategories(req, res, next)
 )
 
-// Path to view job details
 jobRouter.get('/:id', 
     (req, res, next) => {
         jobController.getJobDetails(req, res, next)
     }
 )
 
-// Path to update a job
 jobRouter.post('/:id/update', jwtAuth, 
-    // validateJob,
     (req, res, next) => {
         jobController.updateJob(req, res, next)
     }
 )
 
-// Path to delete a job
 jobRouter.post('/:id/delete', jwtAuth,
     (req, res, next) => {
         jobController.deleteJob(req, res, next)
     }
 )
 
-// Path to apply for a job
-jobRouter.post('/:id/apply', jwtAuth,
-    deleteFileOnValidationError,
+jobRouter.post('/:id/apply', jwtAuth, 
+    uploadFile,
     (req, res, next) => {
-        jobController.applyToJob(req, res, next)
+        applicantController.addApplicant(req, res, next)
     },
-    sendMail
+    (req, res, next) => {
+        jobController.addApplicantToJob(req, res, next)
+    },
+    sendMail,
+    deleteFileOnValidationError
 )
 
 export default jobRouter

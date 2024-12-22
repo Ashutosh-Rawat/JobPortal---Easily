@@ -1,24 +1,25 @@
 import ApplicantModel from '../models/applicant.model.js'
 
 export default class ApplicantRepository {
-    async createApplicant(applicantData) {
+    async createApplicant(applicantDetails) {
         try {
-            const applicant = new ApplicantModel(applicantData)
-            await applicant.save()
-            console.log('Applicant created:', applicant)
-            return applicant
+            const applicant = new ApplicantModel(applicantDetails)
+            const newApplicant = await applicant.save()
+            console.log(`Applicant created: ${newApplicant.email}`)
+            return newApplicant
         } catch (error) {
             console.error('Error creating applicant:', error)
+            throw error
         }
     }
 
     async deleteApplicant(applicantId) {
         try {
             const deletedApplicant = await ApplicantModel.findByIdAndDelete(applicantId)
-            console.log(`Applicant deleted: ${applicantId}`)
-            return deletedApplicant
+            console.log(`Applicant deleted: ${deletedApplicant.email}`)
         } catch (error) {
-            console.error(`Error deleting applicant with ID ${applicantId}:`, error)
+            console.error('Error deleting applicant:', error)
+            throw error
         }
     }
 }

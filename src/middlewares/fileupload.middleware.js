@@ -2,39 +2,18 @@ import multer from 'multer'
 import { GridFsStorage } from 'multer-gridfs-storage'
 import mongoose from 'mongoose'
 
-// MongoDB URI
-const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/yourDatabaseName'
-
-// Create a Mongoose connection
-const connection = mongoose.createConnection(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-
-// GridFS Storage Configuration
+// Multer storage configuration for uploading PDF resumes to GridFS
 const storage = new GridFsStorage({
-    db: connection,
+    url: process.env.DB_URL,
     file: (req, file) => {
-        const fileInfo = {
-            filename: `${Date.now()}-${file.originalname}`,
-            bucketName: 'resumes'
+        return {
+            bucketName: 'resumes', // Define the bucket for GridFS
+            filename: `${Date.now()}-${file.originalname}` // Generate unique file names
         }
-        return fileInfo
     }
 })
 
-// Multer configuration
-const upload = multer({ storage }).single('resume')
+const upload = multer({ storage })
 
-export default (req, res, next) => {
-    upload(req, res, (err) => {
-        if (err) {
-            return next(new Error('File upload failed: ' + err.message))
-        }
-        if (req.file) {
-            req.body.resumePath = req.file.id
-            req.body.filename = req.file.filename
-        }
-        next()
-    })
-}
+// Export as a middleware for use in routes
+export const uploadFile = upload.single('resumeFile') // Upload single resume file
