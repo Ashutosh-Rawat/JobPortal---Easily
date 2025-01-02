@@ -11,21 +11,18 @@ export default class ApplicantController {
             const { name, email, contact, resumePath } = req.body
             const applicantDetails = { name, email, contact, resumePath, job: req.params.id }
             const newApplicant = await this.applicantRepo.createApplicant(applicantDetails)
-            const jobDetails = await jobController.getJobDetails(req, res, next)
 
-            res.locals.mailInfo = {
+            res.locals.applicantInfo = {
                 applicantName: req.body.name,
                 applicantEmail: req.body.email,
-                companyName: jobDetails.companyName,
-                jobDesign: jobDetails.designation
+                jobId: req.params.id,
+                applicantId: newApplicant._id
             }
-            
-            req.applicantId = newApplicant._id
             next()
         } catch (error) {
             next(error)
         }
-    }    
+    }
 
     async removeApplicant(req, res, next) {
         try {

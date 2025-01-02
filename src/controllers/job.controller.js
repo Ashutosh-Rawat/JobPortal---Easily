@@ -131,9 +131,22 @@ export default class JobController {
     async addApplicantToJob(req, res, next) {
         try {
             const jobId = req.params.id
-            const applicantId = req.applicantId
+            const applicantId = res.locals.applicantInfo.applicantId
             await this.jobRepo.addApplicantToJob(jobId, applicantId)
-            res.status(302).redirect(`/jobs/${jobId}`)
+    
+            const jobDetails = await this.jobRepo.findJobById(jobId)
+    
+            if (!jobDetails) {
+                const error = new Error('Job not found')
+                error.status = 404
+                return next(error)
+            }
+            res.locals.mailInfo = {
+                ...res.locals.applicantInfo,
+                companyName: jobDetails.companyName,
+                jobDesign: jobDetails.designation
+            }
+            next()
         } catch (err) {
             next(err)
         }

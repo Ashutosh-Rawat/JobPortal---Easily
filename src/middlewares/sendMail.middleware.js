@@ -14,13 +14,12 @@ const transporter = nodemailer.createTransport({
 
 
 const ejsViewFilename = 'confirmationMail'
-const imgSrc = 'https://cdn.pixabay.com/photo/2016/11/07/13/04/yoga-1805784_1280.png'
 
 const sendMail = (req, res, next) => {
     const { applicantName, applicantEmail, companyName, jobDesign } = res.locals.mailInfo
 
     res.render(ejsViewFilename, {
-        imgSrc, applicantName, companyName, jobDesign
+        applicantName, companyName, jobDesign, includeHeader: false
     }, (err, html) => {
         if (err) {
             console.error('Error rendering email template:', err)
