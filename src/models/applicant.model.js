@@ -25,11 +25,15 @@ const applicantSchema = new Schema({
         type: String,
         required: [true, 'Resume path not provided']
     },
+    job: {
+        type: Schema.Types.ObjectId,
+        ref: 'Job',
+        required: [true, 'Job not provided']
+    },
     createdAt: {
         type: Date,
         default: Date.now
     }
 })
 
-// Export the Applicant model
 export default model('Applicant', applicantSchema)

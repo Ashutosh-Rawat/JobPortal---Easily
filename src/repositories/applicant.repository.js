@@ -1,6 +1,16 @@
 import ApplicantModel from '../models/applicant.model.js'
 
 export default class ApplicantRepository {
+    async getApplicants(jobId) {
+        try {
+            const applicants = await ApplicantModel.find({ job: jobId })
+            return applicants
+        } catch (error) {
+            console.error('Error fetching applicants:', error)
+            throw error
+        }
+    }
+    
     async createApplicant(applicantDetails) {
         try {
             const applicant = new ApplicantModel(applicantDetails)

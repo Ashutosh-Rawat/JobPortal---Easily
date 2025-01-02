@@ -1,33 +1,32 @@
 import ApplicantRepository from '../repositories/applicant.repository.js'
-import JobRepository from '../repositories/job.repository.js'
 
 export default class ApplicantController {
     constructor() {
         this.applicantRepo = new ApplicantRepository()
     }
 
-    // Add new applicant
     async addApplicant(req, res, next) {
         try {
-            const { name, email, contact, resumeLink } = req.body
-            let resumePath = resumeLink
-
-            if (req.file) {
-                resumePath = req.file.path // Use the uploaded file path
-            }
-
-            const applicantDetails = { name, email, contact, resumePath }
+            console.log('job id exists', req.params.id)
+            const { name, email, contact, resumePath } = req.body
+            const applicantDetails = { name, email, contact, resumePath, job: req.params.id }
             const newApplicant = await this.applicantRepo.createApplicant(applicantDetails)
+            const jobDetails = await jobController.getJobDetails(req, res, next)
 
-            // Pass applicant id to job application process
+            res.locals.mailInfo = {
+                applicantName: req.body.name,
+                applicantEmail: req.body.email,
+                companyName: jobDetails.companyName,
+                jobDesign: jobDetails.designation
+            }
+            
             req.applicantId = newApplicant._id
-            next() // Move to the next step to apply to the job
+            next()
         } catch (error) {
             next(error)
         }
-    }
+    }    
 
-    // Remove applicant from the system
     async removeApplicant(req, res, next) {
         try {
             const { applicantId } = req.params

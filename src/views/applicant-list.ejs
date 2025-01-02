@@ -1,7 +1,7 @@
 <div class="container mt-5">
   <div class="inner-container applicant-listing-container">
-    <h2 class="text-center mb-4 applicant-listing-header">Applicants for <%= data.jobDesign %> at <%= data.companyName %></h2>
-    <% if (data.applicants.length > 0) { %>
+    <h2 class="text-center mb-4 applicant-listing-header">Applicants for <%= jobDesign %> at <%= companyName %></h2>
+    <% if (applicants.length > 0) { %>
       <table class="table table-striped text-center applicant-listing-table">
         <thead class="applicant-listing-thead">
           <tr>
@@ -12,13 +12,13 @@
           </tr>
         </thead>
         <tbody class="applicant-listing-tbody">
-          <% data.applicants.forEach(applicant => { %>
+          <% applicants.forEach(applicant => { %>
             <tr>
               <td><%= applicant.name %></td>
               <td><%= applicant.email %></td>
               <td><%= applicant.contact %></td>
               <td>
-                <a href="http://localhost:3100/<%= applicant.resumePath %>" class="text-decoration-underline applicant-listing-link" target="_blank">
+                <a href="<%= applicant.resumePath %>" class="text-decoration-underline applicant-listing-link" target="_blank">
                   Resume
                 </a>
               </td>
