@@ -1,23 +1,19 @@
-import { GridFSBucket } from 'mongodb'
-import mongoose from 'mongoose'
+import fs from 'fs'
+import { ApplicationError } from './ApplicationError.middleware.js'
 
-const deleteFileOnValidationError = async (req, res, next) => {
-    if (!req.filesToDelete || req.filesToDelete.length === 0) return next()
-
-    try {
-        const db = mongoose.connection.db
-        const bucket = new GridFSBucket(db, { bucketName: 'resumes' })
-
-        // Use forEach loop to delete each file
-        req.filesToDelete.forEach(async (filePath) => {
-            const fileId = new mongoose.Types.ObjectId(filePath)
-            await bucket.delete(fileId)
-        })
-
-        next()
-    } catch (error) {
-        next(error)
+const deleteFileOnValidationError = (req, res, next) => {
+    if (req.filesToDelete) {
+        try {
+            req.filesToDelete.forEach((filePath) => {
+                if (fs.existsSync(filePath)) {
+                    fs.unlinkSync(filePath)
+                }
+            })
+        } catch (err) {
+            return next(new ApplicationError({ code: 500, message: 'Error cleaning up files' }))
+        }
     }
+    next()
 }
 
 export default deleteFileOnValidationError
