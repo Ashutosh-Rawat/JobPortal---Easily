@@ -1,7 +1,7 @@
 
-# Project Title
+# Job Portal - Easily
 
-A brief description of the project goes here, highlighting its purpose and value.
+Project Easily is a user-friendly job portal designed to streamline job listings, applications, and notifications. Built using modern web technologies such as Node.js, Express.js, and EJS, the project enables users to sign up, log in securely with JWT authentication, apply for jobs, and receive real-time email notifications about job applications and updates.
 
 ---
 
