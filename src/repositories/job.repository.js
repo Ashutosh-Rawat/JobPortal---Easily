@@ -29,15 +29,25 @@ export default class JobRepository {
 
     async findJobById(jobId) {
         try {
-            const jobObj = await JobModel.findById(jobId).populate('applicants')
-            const job = jobObj.toObject()
+            const jobObj = await JobModel.findById(jobId)
+            // console.log(jobObj)
+            let job
+    
+            if (jobObj) {
+                const populatedJob = await jobObj.populate('applicants')
+                // console.log(populatedJob)
+                job = populatedJob.toObject()
+            } else {
+                job = jobObj.toObject()
+            }
+    
             job._id = job._id.toString()
             job.recruiter = job.recruiter.toString()
             return job
         } catch (error) {
             console.error(`Error finding job with ID ${jobId}:`, error)
         }
-    }
+    }    
 
     async createJob(jobDetails) {
         try {

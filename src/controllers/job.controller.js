@@ -106,9 +106,31 @@ export default class JobController {
         }
     }
 
+    async getApplicantsForJob(req, res, next) {
+        try {
+            const jobId = req.params.id
+            const job = await this.jobRepo.findJobById(jobId)
+            
+            if (!job) throw new Error('Job not found')
+    
+            const applicants = await this.applicantRepo.getApplicants(jobId)
+    
+            res.status(200).render('applicant-list', { 
+                includeHeader: true,
+                applicants, 
+                jobDesign: job.designation, 
+                companyName: job.companyName,
+                formatDate,
+                user: req.session.user
+            })
+        } catch (error) {
+            next(error)
+        }
+    }      
+
     async addApplicantToJob(req, res, next) {
         try {
-            const { jobId } = req.params
+            const jobId = req.params.id
             const applicantId = req.applicantId
             await this.jobRepo.addApplicantToJob(jobId, applicantId)
             res.status(302).redirect(`/jobs/${jobId}`)

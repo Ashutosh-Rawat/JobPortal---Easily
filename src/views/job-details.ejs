@@ -37,7 +37,8 @@
 
     <div class="d-flex gap-2 mt-4">
       <% if(!locals.user) { %>
-        <a href="/jobs/<%= job._id %>/apply" class="btn btn-outline-secondary" style="border-radius: 20px; background-color: #28a745; color: white; border: none;">Apply Now</a>
+        <!-- Button to trigger modal -->
+        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addApplicantModal" style="border-radius: 20px; background-color: #28a745; color: white; border: none;">Apply Now</button>
       <% } else { %>
         <% if(job.applicants && job.applicants.length) { %>
           <a href="/jobs/<%= job._id %>/applicants" class="btn btn-outline-success" style="border-radius: 20px; background-color: #28a745; color: white; border: none;">See Applications</a>
@@ -50,6 +51,9 @@
     </div>
   </div>
 </div>
+
+<!-- Add Applicant Modal -->
+<%- include('modals/add-applicant', { job }) %>
 
 <script>
   const job = '<%- JSON.stringify(job) %>'
