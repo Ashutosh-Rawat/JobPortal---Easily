@@ -1,24 +1,16 @@
 export class ApplicationError extends Error {
-    constructor({ code = 500, message = 'An unexpected error occurred' }) {
+    constructor({ code = 500, message = 'Something went wrong', stack = '' }) {
         super(message)
         this.code = code
-        this.message = message
+        this.stack = stack
     }
 }
 
 const applicationErrorHandler = (err, req, res, next) => {
-    if (err instanceof ApplicationError) {
-        const stack = new Error().stack.split('\n').slice(1).join('\n')  // Get traceback excluding the first line
-        console.log(`url: ${req.url}`)
-        console.error(`[${new Date().toISOString()}] Code: ${err.code}, Message: ${err.message}, Stack Trace: ${stack}`)
-        req.session.err = err
-        res.status(err.code).redirect('/err')
-    } else {
-        const stack = new Error().stack.split('\n').slice(1).join('\n')  // Get traceback excluding the first line
-        console.error(`[${new Date().toISOString()}] Unexpected Error: ${err.message}, Stack Trace: ${stack}`)
-        req.session.err = new ApplicationError(500, 'Unexpected Server Error')
-        res.status(500).redirect('/err')
-    }
+    const status = err.code || 500
+    const message = err.message || 'Internal Server Error'
+    console.error(`[${new Date().toISOString()}] ${message}, Stack Trace:`, err.stack)
+    res.status(status).render('err-page', { message, includeHeader: false })
 }
 
 export default applicationErrorHandler

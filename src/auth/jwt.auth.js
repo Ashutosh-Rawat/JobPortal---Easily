@@ -26,13 +26,13 @@ export const createToken = (payload) => {
 export const jwtAuth = (req, res, next) => {
     const token = req.cookies.token
     if (!token) {
-        return res.status(401).redirect('/err-page')
+        return res.status(401).redirect('/err')
     }
     try {
         jwt.verify(token, secret)
         next()
     } catch (err) {
-        res.status(401).redirect('/err-page')
+        res.status(401).redirect('/err')
     }
 }
 
