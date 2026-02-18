@@ -18,15 +18,6 @@ const transporter = nodemailer.createTransport({
   connectionTimeout: 10000,
 });
 
-// check transporter verification
-transporter.verify((err, success) => {
-  if (err) {
-    console.log("SMTP VERIFY ERROR:", err);
-  } else {
-    console.log("SMTP ready");
-  }
-});
-
 const ejsViewFilename = "confirmationMail";
 
 const sendMail = (req, res, next) => {
