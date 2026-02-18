@@ -5,15 +5,10 @@ dotenv.config();
 const senderMail = process.env.HOST_MAIL;
 
 const transporter = nodemailer.createTransport({
-  service: "smtp.gmail.com",
-  port: 587,
-  secure: false,
+  service: "gmail",
   auth: {
     user: senderMail,
     pass: process.env.HOST_PASSWORD,
-  },
-  tls: {
-    rejectUnauthorized: false,
   },
   connectionTimeout: 10000,
 });
