@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import flash from "connect-flash";
+import dns from "dns";
 
 // routers
 import userRouter from "./src/routes/user.routes.js";
@@ -40,6 +41,9 @@ app.use(
 
 // Environmental variables configuration
 dotenv.config();
+
+// forcing ipv4 for nodemailer
+dns.setDefaultResultOrder("ipv4first");
 
 // Static file paths
 app.use(express.static(path.join("src", "views")));

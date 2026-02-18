@@ -32,7 +32,8 @@ const sendMail = (req, res, next) => {
     (err, html) => {
       if (err) {
         console.error("Error rendering email template:", err);
-        return next(err);
+        // Continue without crashing
+        return res.redirect(`/jobs/${req.params.id}`);
       }
 
       const mailOptions = {
@@ -44,11 +45,16 @@ const sendMail = (req, res, next) => {
 
       transporter.sendMail(mailOptions, (error) => {
         if (error) {
-          console.error("Error sending email:", error);
-          return next(error);
+          console.error(
+            "Error sending email, but application saved:",
+            error.message,
+          );
+          // Continue without crashing
+          return res.redirect(`/jobs/${req.params.id}`);
         }
+
         console.log("Email sent successfully!");
-        res.redirect("/jobs");
+        return res.redirect(`/jobs/${req.params.id}`);
       });
     },
   );
