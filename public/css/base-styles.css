@@ -1,152 +1,183 @@
 :root {
-    --primary-color: #007bff; /* Vibrant Blue */
-    --secondary-color: #28a745; /* Fresh Green */
-    --accent-color: #ff5733; /* Bright Red */
-    --bg-color: #f8f9fa; /* Soft Light Grey */
-    --dark-bg-color: #2c3e50; /* Dark Blue-Grey */
-    --text-color: #212529; /* Deep Blue */
-    --header-bg-color: rgba(255, 255, 255, 0.95); /* Semi-transparent White */
-    --font-normal: 'Roboto', sans-serif;
-    --font-emphasized: 'Montserrat', sans-serif;
-    --border-radius: 8px;
-    --shadow-light: 0 4px 8px rgba(0, 0, 0, 0.1);
-    --shadow-dark: 0 6px 12px rgba(0, 0, 0, 0.2);
+  --primary-color: #007bff; /* Vibrant Blue */
+  --secondary-color: #28a745; /* Fresh Green */
+  --accent-color: #ff5733; /* Bright Red */
+  --bg-color: #f8f9fa; /* Soft Light Grey */
+  --dark-bg-color: #2c3e50; /* Dark Blue-Grey */
+  --text-color: #212529; /* Deep Blue */
+  --header-bg-color: rgba(255, 255, 255, 0.95); /* Semi-transparent White */
+  --font-normal: "Roboto", sans-serif;
+  --font-emphasized: "Montserrat", sans-serif;
+  --border-radius: 8px;
+  --shadow-light: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-dark: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Body and Links */
 body {
-    font-family: var(--font-normal);
-    background-color: var(--bg-color);
-    color: var(--text-color);
+  font-family: var(--font-normal);
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 a {
-    color: var(--primary-color);
-    text-decoration: none;
+  color: var(--primary-color);
+  text-decoration: none;
 }
 
 a:hover {
-    color: var(--accent-color);
+  color: var(--accent-color);
 }
 
 /* Button Styles */
 .btn {
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--border-radius);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .btn-primary {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
 }
 
 .btn-primary:hover {
-    filter: brightness(85%);
+  filter: brightness(85%);
 }
 
 .btn-secondary {
-    background-color: var(--secondary-color);
-    color: white;
-    border: none;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
 }
 
 .btn-secondary:hover {
-    background-color: var(--secondary-color);
-    filter: brightness(85%);
+  background-color: var(--secondary-color);
+  filter: brightness(85%);
 }
 
 /* Hero Section */
 .hero-section {
-    background: linear-gradient(45deg, var(--primary-color), var(--bg-color));
-    color: white;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background: linear-gradient(45deg, var(--primary-color), var(--bg-color));
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .glass-container {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(10px);
-    border-radius: var(--border-radius);
-    padding: 2rem;
-    margin-top: 4rem;
-    box-shadow: var(--shadow-dark);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  margin-top: 4rem;
+  box-shadow: var(--shadow-dark);
 }
 
 /* Features Section */
 .features-section {
-    padding: 2rem;
-    background-color: var(--bg-color);
+  padding: 2rem;
+  background-color: var(--bg-color);
 }
 
 .job-tile {
-    padding: 1.5rem;
-    border-radius: var(--border-radius);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    color: var(--text-color);
-    background-clip: content-box, padding-box;
-    backdrop-filter: blur(10px);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  color: var(--text-color);
+  background-clip: content-box, padding-box;
+  backdrop-filter: blur(10px);
 }
 
 .job-tile:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-dark);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-dark);
 }
 
 /* Glassy Gradients */
 .glass-tile-gradient-1 {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(0, 123, 255, 0.5)) !important;
-    backdrop-filter: blur(8px);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.4),
+    rgba(0, 123, 255, 0.5)
+  ) !important;
+  backdrop-filter: blur(8px);
 }
 
 .glass-tile-gradient-2 {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(40, 167, 69, 0.5)) !important;
-    backdrop-filter: blur(8px);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.4),
+    rgba(40, 167, 69, 0.5)
+  ) !important;
+  backdrop-filter: blur(8px);
 }
 
 .glass-tile-gradient-3 {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 87, 51, 0.5)) !important;
-    backdrop-filter: blur(8px);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.4),
+    rgba(255, 87, 51, 0.5)
+  ) !important;
+  backdrop-filter: blur(8px);
 }
 
 .modal-transform-up {
-    transform: translateY(-10%) !important;
+  transform: translateY(-10%) !important;
 }
-
 
 /* font awesome icons */
 .fss {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 .fsm {
-    font-size: 1.8rem;
+  font-size: 1.8rem;
 }
 .fsl {
-    font-size: 2.5rem;
+  font-size: 2.5rem;
 }
 .fsxl {
-    font-size: 3rem;
+  font-size: 3rem;
 }
 .c-orange {
-    color: #ff5733;
+  color: #ff5733;
 }
 .cl-orange {
-    color: #ff5733;
+  color: #ff5733;
 }
 .c-yellow {
-    color: #ffc107;
+  color: #ffc107;
 }
 .cl-indigo {
-    color: #6c63ff;
+  color: #6c63ff;
 }
 
 .bg-indigo {
-    background-color: #6c63ff !important;
+  background-color: #6c63ff !important;
 }
 
 .border-r {
-    border-radius: 20px;
+  border-radius: 20px;
+}
+
+.alert {
+  padding: 10px;
+  margin: 10px;
+  border-radius: 4px;
+}
+
+.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
 }

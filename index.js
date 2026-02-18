@@ -1,63 +1,79 @@
-import express, { urlencoded } from 'express'
-import path from 'path'
-import ejsLayouts from 'express-ejs-layouts'
-import session from 'express-session'
-import cookieParser from 'cookie-parser'
-import bodyParser from 'body-parser'
-import dotenv from 'dotenv'
+import express, { urlencoded } from "express";
+import path from "path";
+import ejsLayouts from "express-ejs-layouts";
+import session from "express-session";
+import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
+import dotenv from "dotenv";
+import flash from "connect-flash";
+
 // routers
-import userRouter from './src/routes/user.routes.js'
-import jobRouter from './src/routes/job.routes.js'
-import applicantRouter from './src/routes/applicant.routes.js'
-import categoryRouter from './src/routes/category.routes.js'
+import userRouter from "./src/routes/user.routes.js";
+import jobRouter from "./src/routes/job.routes.js";
+import applicantRouter from "./src/routes/applicant.routes.js";
+import categoryRouter from "./src/routes/category.routes.js";
 // functional middlewares
-import applicationErrorHandler, {ApplicationError} from './src/middlewares/ApplicationError.middleware.js'
+import applicationErrorHandler, {
+  ApplicationError,
+} from "./src/middlewares/ApplicationError.middleware.js";
 // functional controllers
-import getHome from './src/controllers/home.controller.js'
-import getError from './src/controllers/error.controller.js'
+import getHome from "./src/controllers/home.controller.js";
+import getError from "./src/controllers/error.controller.js";
 
 // Express app declaration
-const app = express()
+const app = express();
 
 // Middleware configuration
-app.use(cookieParser())
-app.use(urlencoded({ extended: true }))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'secret-key-ABCD',
+app.use(flash());
+app.use(cookieParser());
+app.use(urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "secret-key-ABCD",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: process.env.NODE_ENV === 'production' }
-}))
+    cookie: { secure: process.env.NODE_ENV === "production" },
+  }),
+);
 
 // Environmental variables configuration
-dotenv.config()
+dotenv.config();
 
 // Static file paths
-app.use(express.static(path.join('src', 'views')))
-app.use(express.static(path.join('public')))
+app.use(express.static(path.join("src", "views")));
+app.use(express.static(path.join("public")));
 
 // View engine setup
-app.set('view engine', 'ejs')
-app.set('views', path.resolve('src', 'views'))
-app.use(ejsLayouts)
+app.set("view engine", "ejs");
+app.set("views", path.resolve("src", "views"));
+app.use(ejsLayouts);
+
+// flash messages
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
+});
 
 // Routes
-app.get('/', getHome)
-app.get('/err', getError)
+app.get("/", getHome);
+app.get("/err", getError);
 
-app.use('/user', userRouter)
-app.use('/jobs', jobRouter)
-app.use('/applicant', applicantRouter)
-app.use('/categories', categoryRouter)
+app.use("/user", userRouter);
+app.use("/jobs", jobRouter);
+app.use("/applicant", applicantRouter);
+app.use("/categories", categoryRouter);
 // ignore favicon request
-app.get('/favicon.ico', (req, res) => res.status(204))
+app.get("/favicon.ico", (req, res) => res.status(204));
 // Error handler middleware
-app.use(applicationErrorHandler)
+app.use(applicationErrorHandler);
 // Handling invalid routes
 app.use((req, res, next) => {
-    next(new ApplicationError({ code: 404, message: `Route not found: ${req.url}` }))
-})
+  next(
+    new ApplicationError({ code: 404, message: `Route not found: ${req.url}` }),
+  );
+});
 
-export default app
+export default app;

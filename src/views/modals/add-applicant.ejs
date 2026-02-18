@@ -1,11 +1,24 @@
 <!-- Applicant Add Modal -->
-<div class="modal fade" id="addApplicantModal" tabindex="-1" aria-labelledby="addApplicantModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="addApplicantModal"
+  tabindex="-1"
+  aria-labelledby="addApplicantModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <!-- Modal Header -->
       <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title" id="addApplicantModalLabel">Job Applicant for <%= job.designation %></h5>
-        <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="addApplicantModalLabel">
+          Job Applicant for <%= job.designation %>
+        </h5>
+        <button
+          type="button"
+          class="btn-close text-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <!-- Modal Body -->
       <div class="modal-body">
@@ -13,25 +26,63 @@
           <!-- Applicant Details -->
           <div class="mb-3">
             <label for="applicantName" class="form-label">Applicant Name</label>
-            <input type="text" id="applicantName" name="name" class="form-control" required>
+            <input
+              type="text"
+              id="applicantName"
+              name="name"
+              class="form-control"
+              required
+            />
           </div>
           <div class="mb-3">
             <label for="applicantEmail" class="form-label">Email Address</label>
-            <input type="email" id="applicantEmail" name="email" class="form-control" required>
+            <input
+              type="email"
+              id="applicantEmail"
+              name="email"
+              class="form-control"
+              required
+            />
           </div>
           <div class="mb-3">
-            <label for="applicantContact" class="form-label">Contact Number</label>
-            <input type="tel" id="applicantContact" name="contact" class="form-control" required pattern="^[0-9]{10}$" title="Contact number must be a valid 10-digit number">
+            <label for="applicantContact" class="form-label"
+              >Contact Number</label
+            >
+            <input
+              type="tel"
+              id="applicantContact"
+              name="contact"
+              class="form-control"
+              required
+              pattern="^[0-9]{10}$"
+              title="Contact number must be a valid 10-digit number"
+            />
           </div>
           <div class="mb-3">
-            <label for="applicantResumeLink" class="form-label">Resume Link (Google Drive)</label>
-            <input type="url" id="applicantResumeLink" name="resumePath" class="form-control" required pattern="https?://drive.google.com/.*" title="Please provide a valid Google Drive link">
+            <label for="applicantResumeLink" class="form-label"
+              >Resume Link (Google Drive)</label
+            >
+            <input
+              type="url"
+              id="applicantResumeLink"
+              name="resumePath"
+              class="form-control"
+              required
+              pattern="https?://drive.google.com/.*"
+              title="Please provide a valid Google Drive link"
+            />
           </div>
           <!-- Job Information (Hidden) -->
-          <input type="hidden" name="jobId" value="<%= job._id %>">
-          <input type="hidden" name="designation" value="<%= job.designation %>">
+          <input type="hidden" name="jobId" value="<%= job._id %>" />
+          <input
+            type="hidden"
+            name="designation"
+            value="<%= job.designation %>"
+          />
           <!-- Submit Button -->
-          <button type="submit" class="btn btn-success w-100">Submit Application</button>
+          <button type="submit" class="btn btn-success w-100">
+            Submit Application
+          </button>
         </form>
       </div>
     </div>
