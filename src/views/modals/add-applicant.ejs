@@ -22,7 +22,11 @@
       </div>
       <!-- Modal Body -->
       <div class="modal-body">
-        <form id="addApplicantForm" method="POST" action="<%= job._id %>/apply">
+        <form
+          id="addApplicantForm"
+          method="POST"
+          action="/jobs/<%= job._id %>/apply"
+        >
           <!-- Applicant Details -->
           <div class="mb-3">
             <label for="applicantName" class="form-label">Applicant Name</label>
