@@ -5,11 +5,14 @@ dotenv.config();
 const senderMail = process.env.HOST_MAIL;
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  service: "smtp.gmail.com",
+  port: 587,
+  secure: false,
   auth: {
     user: senderMail,
     pass: process.env.HOST_PASSWORD,
   },
+  connectionTimeout: 10000,
 });
 
 const ejsViewFilename = "confirmationMail";
