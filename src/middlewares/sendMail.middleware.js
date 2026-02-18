@@ -12,7 +12,19 @@ const transporter = nodemailer.createTransport({
     user: senderMail,
     pass: process.env.HOST_PASSWORD,
   },
+  tls: {
+    rejectUnauthorized: false,
+  },
   connectionTimeout: 10000,
+});
+
+// check transporter verification
+transporter.verify((err, success) => {
+  if (err) {
+    console.log("SMTP VERIFY ERROR:", err);
+  } else {
+    console.log("SMTP ready");
+  }
 });
 
 const ejsViewFilename = "confirmationMail";
